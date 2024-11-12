@@ -1,5 +1,8 @@
 #!/bin/bash 
 
+# version 1.0 
+# github based config
+
 #export DESKTOP_SESSION=LXDE-pi-wayfire
 export DISPLAY=:2
 
@@ -15,7 +18,7 @@ rm  -f ~/.mozilla/firefox/hvcfi1v2.default-release/xulstore.json
 ## firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 ## firefox  --start-maximized   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 
-firefox  --start-maximized   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
+firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 	-new-tab https://www.surfchex.com/cams/wrightsville-beach/ \
 	-new-tab https://www.surfchex.com/cams/rodanthe-web-cam/  \
 	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/rad_nc_moreheadcity_640x480.htm \
@@ -32,4 +35,12 @@ firefox  --start-maximized   -new-tab https://www.tide-forecast.com/locations/Or
 	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  \
 	-new-tab https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/ &
 
+
+#fetch most recent config to make sure urls are up to date
+#sleep for a bit make sure wifi is up
+sleep 10
+file1="start-ff.${HOSTNAME}"
+cd ~/Documents
+wget -O start-ff.sh https://sl45082.github.io/basic/${file1}
+chmod 775 start-ff.sh
 
