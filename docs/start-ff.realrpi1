@@ -41,6 +41,6 @@ firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet
 sleep 10
 file1="start-ff.${HOSTNAME}"
 cd ~/Documents
-wget -O start-ff.sh https://sl45082.github.io/basic/${file1}
+wget -O start-ff.sh https://sl45082.github.io/basic/${file1} -o log
 chmod 775 start-ff.sh
 
