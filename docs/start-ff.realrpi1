@@ -1,8 +1,9 @@
 #!/bin/bash 
 
-# version 1.2 
+# version 1.3 
 # github based config
 #	file length checks
+#	cones integration started
 
 #export DESKTOP_SESSION=LXDE-pi-wayfire
 export DISPLAY=:2
@@ -29,6 +30,7 @@ firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet
 	-new-tab https://wx.iwindsurf.com/profile/100791 \
 	-new-tab https://www.surfchex.com/cams/waves-nc/ \
 	-new-tab "file:///home/admin/Documents/7day.html" \
+ 	-new-tab "file:///home/admin/Documents/cones.html" \
 	-new-tab https://surfcaptain.com/forecast/rodanthe-north-carolina \
 	-new-tab https://www.realwatersports.com \
 	-new-tab https://www.accuweather.com/en/us/severe-weather \
@@ -53,3 +55,6 @@ then
 	chmod 775 start-ff.sh
 fi
 
+
+# generate a cones html for the active hurricane.
+./cones.sh & 
