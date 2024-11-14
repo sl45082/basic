@@ -53,6 +53,7 @@ if [[ $flen -gt 1000 ]];
 then
 	cp $file1 start-ff.sh 
 	chmod 775 start-ff.sh
+	rm -f $file1
 fi
 
 
