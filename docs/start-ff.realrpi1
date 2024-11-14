@@ -1,7 +1,8 @@
 #!/bin/bash 
 
-# version 1.1 
+# version 1.2 
 # github based config
+#	file length checks
 
 #export DESKTOP_SESSION=LXDE-pi-wayfire
 export DISPLAY=:2
@@ -36,11 +37,19 @@ firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet
 	-new-tab https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/ &
 
 
-#fetch most recent config to make sure urls are up to date
+#fetch most recent config from cloud to make sure urls are up to date
+
 #sleep for a bit make sure wifi is up
 sleep 10
 file1="start-ff.${HOSTNAME}"
 cd ~/Documents
-wget -O start-ff.sh https://sl45082.github.io/basic/${file1} -o log
-chmod 775 start-ff.sh
+wget https://sl45082.github.io/basic/${file1} -o log
+
+#add error checks to make sure file is valid
+flen=`wc -c ${file1} | cut -f1 -d' '`
+if [[ $flen -gt 1000 ]]; 
+then
+	cp $file1 start-ff.sh 
+	chmod 775 start-ff.sh
+fi
 
