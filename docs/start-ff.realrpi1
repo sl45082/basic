@@ -1,15 +1,14 @@
 #!/bin/bash 
 
-# version 1.4 
+# version 1.5 
 # github based config
 #	file length checks
 #	cones integration started
 #	cones generation to 1st step
+#	delay firefox startup
 
 #export DESKTOP_SESSION=LXDE-pi-wayfire
 export DISPLAY=:2
-
-lxterminal & 
 
 # in sudo raspi-config changed settings to support 4k60fs
 # in firefox and chromium disabled hardware accleration support
@@ -26,6 +25,7 @@ rm  -f ~/.mozilla/firefox/hvcfi1v2.default-release/xulstore.json
 ## firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 ## firefox  --start-maximized   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 
+sleep 20
 firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 	-new-tab https://www.surfchex.com/cams/wrightsville-beach/ \
 	-new-tab https://www.surfchex.com/cams/rodanthe-web-cam/  \
@@ -44,6 +44,9 @@ firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet
 	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  \
 	-new-tab https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/ &
 
+
+#start a terminal for debugging if necessary
+lxterminal & 
 
 #fetch most recent config from cloud to make sure urls are up to date
 
