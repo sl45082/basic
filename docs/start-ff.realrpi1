@@ -14,7 +14,8 @@ export DISPLAY=:2
 # in firefox and chromium disabled hardware accleration support
 
 
-# generate a cones html for the active hurricane.
+# generate a cones html for the active hurricane -during the season (july-nov). otherwise show an image
+# from weather.com of the US weather. See the script below for more info:
 cd ~/Documents
 ./cones.sh & 
 
@@ -33,7 +34,7 @@ firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet
 	-new-tab https://www.surfchex.com/cams/hatteras-web-cam/ \
 	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/satrad_reg_640x480.htm \
 	-new-tab https://www.surfchex.com/cams/avon/ \
-	-new-tab https://wx.iwindsurf.com/profile/100791 \
+	-new-tab https://wx.ikitesurf.com/search/35.158/-75.282/8 \
 	-new-tab https://www.surfchex.com/cams/waves-nc/ \
 	-new-tab "file:///home/admin/Documents/7day.html" \
  	-new-tab "file:///home/admin/Documents/cones.html" \
