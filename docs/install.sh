@@ -20,7 +20,7 @@ export DISPLAY=:2
 
 # 1. make sure we are in good directory
 mydir=`basename "$PWD"`
-if [[ "${mydir}" -ne "Documents" ]];
+if [[ "${mydir}" != "Documents" ]];
 then
 	echo "Please run install from ~/Documents directory, existing so you can retry."
 	exit
