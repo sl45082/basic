@@ -25,6 +25,8 @@ echo "launching firefox...."
 rm  -f ~/.mozilla/firefox/hvcfi1v2.default-release/xulstore.json
 ## firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 ## firefox  --start-maximized   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
+# TODO: when there are no hurricanes use this image in the 7day.html:
+#	https://s.w-x.co/staticmaps/wu/wu/wxtype1200_cur/conus/animate.png	
 
 sleep 20
 firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
