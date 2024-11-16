@@ -43,7 +43,13 @@ chmod +x *.sh
 # 4. append auto launch to end of wayfire.ini
 cat wayfire.ini  >> ~/.config/wayfire.ini
 
+# 5. update firefox
+cp user.js ~/.mozilla
+firefox tab_rotator-2.0.3resigned1.xpi
+# user must ok this step and config the prefs on the plugin 
+
+
+echo "If you finished the tab_rotator config in firefox hit ENTER to Reboot. Otherwise CTRL-C to reboot later."; read x
 sleep 3
-echo "Rebooting now...."
 reboot
 
