@@ -1,6 +1,18 @@
 #!/bin/bash 
 
-cat banner.txt
+cat <<'EOS'
+
+                  __  __                        
+ _    _____ ___ _/ /_/ /  ___ _______ ____  ___ 
+| |/|/ / -_) _ `/ __/ _ \/ -_) __/ _ `/ _ \/ _ \
+|__,__/\__/\_,_/\__/_//_/\__/_/  \_,_/ .__/ .__/
+ _  _<  // _ \                      /_/  /_/    
+| |/ / // // /                                  
+|___/_(_)___/                                   
+                                                
+
+EOS
+
 echo "hit ENTER to install or CTRL-C to abort: ";read x
 
 #assuming hdmi port 0 is here monitor is
