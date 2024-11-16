@@ -30,10 +30,11 @@ wget  https://sl45082.github.io/basic/d12rpi5wapp1.0.zip -o log
 unzip -l d12rpi5wapp1.0.zip
 echo "hit ENTER if you see a list of files otherwise CTRL-C to abort: ";read x
 
-unzip -v d12rpi5wapp1.0.zip
+unzip d12rpi5wapp1.0.zip
 
 # 2. install the cron
-sudo cp -v weather.cron /var/spool/cron/crontabs/admin
+crontab -u $USER weather.cron
+crontab -l
 
 
 # 3. make sure the .sh files are executable
