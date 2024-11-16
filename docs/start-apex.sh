@@ -23,7 +23,7 @@ rm  -f ~/.mozilla/firefox/hvcfi1v2.default-release/xulstore.json
 sleep 20
 firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Wrightsville-Beach-North-Carolina/tides/latest \
 	-new-tab https://www.surfchex.com/cams/wrightsville-beach/ \
-	-new-tab https://www.accuweather.com/en/us/apex/27502/weather-forecast/334857 \
+	-new-tab https://www.accuweather.com/en/us/wilmington/28401/weather-forecast/329819?city=wilmington \
 	-new-tab https://www.surfchex.com/cams/johnnie-mercers-pier/ \
 	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/rad_nc_moreheadcity_640x480.htm \
 	-new-tab https://wx.ikitesurf.com/search/34.331/-77.336/8 \
