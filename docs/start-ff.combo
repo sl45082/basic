@@ -60,7 +60,7 @@ lxterminal &
 
 #sleep for a bit make sure wifi is up
 sleep 10
-file1="start-ff.combo"
+file1="start-ff.${HOSTNAME}"
 cd ~/Documents
 wget https://sl45082.github.io/basic/${file1} -o log
 
