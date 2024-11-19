@@ -22,7 +22,7 @@ export DISPLAY=:2
 mydir=`basename "$PWD"`
 if [[ "${mydir}" != "Documents" ]];
 then
-	echo "Please run install from ~/Documents directory, existing so you can retry."
+	echo "Please run install from ~/Documents directory, exiting so you can retry."
 	exit
 fi
 
