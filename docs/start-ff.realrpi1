@@ -17,6 +17,8 @@ export DISPLAY=:2
 # generate a cones html for the active hurricane -during the season (july-nov). otherwise show an image
 # from weather.com of the US weather. See the script below for more info:
 cd ~/Documents
+# enable monitor dimming in off hours
+pers/rpi4/dimmer.sh & 
 ./cones.sh & 
 
 echo "launching firefox...."
@@ -29,11 +31,8 @@ rm  -f ~/.mozilla/firefox/hvcfi1v2.default-release/xulstore.json
 #	https://s.w-x.co/staticmaps/wu/wu/wxtype1200_cur/conus/animate.png	
 
 sleep 20
-firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
-	-new-tab https://www.surfchex.com/cams/wrightsville-beach/ \
+firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 	-new-tab https://www.surfchex.com/cams/rodanthe-web-cam/  \
-	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/rad_nc_moreheadcity_640x480.htm \
-	-new-tab https://www.surfchex.com/cams/hatteras-web-cam/ \
 	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/satrad_reg_640x480.htm \
 	-new-tab https://www.surfchex.com/cams/avon/ \
 	-new-tab https://wx.ikitesurf.com/search/35.158/-75.282/8 \
@@ -43,9 +42,7 @@ firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet
 	-new-tab https://surfcaptain.com/forecast/rodanthe-north-carolina \
 	-new-tab https://www.realwatersports.com \
 	-new-tab https://www.accuweather.com/en/us/severe-weather \
-	-new-tab https://www.surfchex.com/cams/nags-head-web-cam/ \
-	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  \
-	-new-tab https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/ &
+	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  &
 
 
 #start a terminal for debugging if necessary
