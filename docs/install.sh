@@ -43,6 +43,9 @@ chmod +x *.sh
 # 4. append auto launch to end of wayfire.ini
 cat wayfire.ini  >> ~/.config/wayfire.ini
 
+# 4.1 update cursor files so it hides the cursor in browser
+./hide-cur.sh
+
 # 5. update firefox
 # set some default config
 cp user.js ~/.mozilla
