@@ -36,7 +36,7 @@ firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecas
 	-new-tab https://www.surfchex.com/cams/avon/ \
 	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/satrad_reg_640x480.htm \
 	-new-tab https://www.surfchex.com/cams/rodanthe-web-cam/  \
-	-new-tab https://wx.iwindsurf.com/profile/100791 \
+	-new-tab https://wx.ikitesurf.com/search/35.158/-75.282/8 \
 	-new-tab https://www.surfchex.com/cams/waves-nc/ \
 	-new-tab https://www.surfchex.com/cams/waves-nc-oceanside/ \
 	-new-tab "file:///home/admin/Documents/7day.html" \
@@ -47,13 +47,12 @@ firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecas
 
 
 
-exit
 
 #fetch most recent config from cloud to make sure urls are up to date
 
 #sleep for a bit make sure wifi is up
 sleep 10
-file1="start-ff.barton"
+file1="start-ff.bb"
 cd ~/Documents
 wget https://sl45082.github.io/basic/${file1} -o log
 
