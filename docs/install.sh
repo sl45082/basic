@@ -42,6 +42,7 @@ chmod +x *.sh
 
 # 4. append auto launch to end of wayfire.ini
 cat wayfire.ini  >> ~/.config/wayfire.ini
+cp autostart.labwc ~/.config/labwc/autostart
 
 # 4.1 update cursor files so it hides the cursor in browser
 ./hide-cur.sh
@@ -50,7 +51,7 @@ cat wayfire.ini  >> ~/.config/wayfire.ini
 # set some default config
 cp user.js ~/.mozilla
 # assume hi-res monitor
-cp pers/rpi4/content-prefs.sqlite.high ~/.mozilla/firefox/hvcfi1v2.default-release/content-prefs.sqlite 
+cp content-prefs.sqlite.high ~/.mozilla/firefox/*.default-release/content-prefs.sqlite 
 
 firefox tab_rotator-2.0.3resigned1.xpi
 # user must ok this step and config the prefs on the plugin 
