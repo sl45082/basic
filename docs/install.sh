@@ -45,7 +45,8 @@ cat wayfire.ini  >> ~/.config/wayfire.ini
 cp autostart.labwc ~/.config/labwc/autostart
 
 # 4.1 update cursor files so it hides the cursor in browser
-./hide-cur.sh
+#switching to labwc so this doesnt work anymore - TODO cleanup
+#./hide-cur.sh
 
 # 5. update firefox
 # set some default config
@@ -55,6 +56,12 @@ cp content-prefs.sqlite.high ~/.mozilla/firefox/*.default-release/content-prefs.
 
 firefox tab_rotator-2.0.3resigned1.xpi
 # user must ok this step and config the prefs on the plugin 
+
+# 6. disable wifi power mgmt
+sudo cp rc.local /etc
+sudo chmod +x /etc/rc.local
+sudo systemctl enable rc-local
+sudo systemctl start rc-local
 
 
 echo "If you finished the tab_rotator config in firefox hit ENTER to Reboot. Otherwise CTRL-C to reboot later."; read x
