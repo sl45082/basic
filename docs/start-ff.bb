@@ -43,6 +43,7 @@ firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecas
 	-new-tab "file:///home/admin/Documents/cones.html" \
 	-new-tab https://surfcaptain.com/forecast/rodanthe-north-carolina \
 	-new-tab https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/ \
+	-new-tab https://www.ospo.noaa.gov/data/sst/contour/natlanti.cf.gif \
 	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  &
 
 
