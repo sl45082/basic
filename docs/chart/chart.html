@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SPY 5-Minute Candlestick Chart with EMA</title>
+  <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #chart {
+      width: 100%;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <div id="chart-wrapper" style="position: relative; width: 100%; height: 600px;">
+    <div id="chart" style="width: 100%; height: 100%;"></div>
+    <canvas id="viewport" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: auto;"></canvas>
+  </div>
+
+  <script>
+    const API_KEY = '68695a2e24e998.69900337'; // Replace with your EODHD API key
+    const SYMBOL = 'SPY.US';
+    const INTERVAL = '5m';
+    const API_URL = `https://eodhd.com/api/intraday/${SYMBOL}?api_token=${API_KEY}&interval=${INTERVAL}&fmt=json`;
+
+    async function fetchData() {
+      const res = await fetch(API_URL);
+      const raw = await res.json();
+
+      return raw.map(d => ({
+        time: Math.floor(new Date(d.datetime).getTime() / 1000),
+        open: d.open,
+        high: d.high,
+        low: d.low,
+        close: d.close
+      }));
+    }
+
+    function calculateEMA(data, period = 20) {
+      const ema = [];
+      let multiplier = 2 / (period + 1);
+      let prevEma;
+
+      data.forEach((point, index) => {
+        if (index < period - 1) return;
+        if (index === period - 1) {
+          const sum = data.slice(0, period).reduce((acc, val) => acc + val.close, 0);
+          prevEma = sum / period;
+          ema.push({ time: point.time, value: prevEma });
+        } else {
+          prevEma = (point.close - prevEma) * multiplier + prevEma;
+          ema.push({ time: point.time, value: prevEma });
+        }
+      });
+
+      return ema;
+    }
+
+function setupDraggableViewport(canvas, chart) {
+  const ctx = canvas.getContext('2d');
+  let dragging = false;
+  let rectX = 100;
+  let rectWidth = 300;
+
+  function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    draw();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
+    ctx.fillRect(rectX, 0, rectWidth, canvas.height);
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    if (e.offsetX > rectX && e.offsetX < rectX + rectWidth) {
+      dragging = true;
+    }
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (dragging) {
+      rectX = Math.max(0, Math.min(e.offsetX - rectWidth / 2, canvas.width - rectWidth));
+      draw();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    dragging = false;
+  });
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+}
+
+    async function drawChart() {
+      const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+        layout: {
+          background: { color: '#ffffff' },
+          textColor: '#000',
+        },
+        grid: {
+          vertLines: { color: '#eee' },
+          horzLines: { color: '#eee' },
+        },
+        timeScale: {
+          timeVisible: true,
+          secondsVisible: false,
+        },
+        width: window.innerWidth,
+        height: 600,
+      });
+
+      const candleSeries = chart.addCandlestickSeries();
+      const data = await fetchData();
+      candleSeries.setData(data);
+
+      const emaData = calculateEMA(data);
+      const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
+      emaSeries.setData(emaData);
+
+    }
+
+    drawChart();
+    setupDraggableViewport(document.getElementById('viewport'), chart);
+
+  </script>
+</body>
+</html>
+
