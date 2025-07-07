@@ -3,19 +3,23 @@
 #export DESKTOP_SESSION=LXDE-pi-wayfire
 export DISPLAY=:2
 
+# let network stack come up
+sleep 20
 
 lxterminal & 
+
+sudo /sbin/iw wlan0 set power_save off
 
 # in sudo raspi-config changed settings to support 4k60fs
 # in firefox and chromium disabled hardware accleration support
 
-
-# generate a cones html for the active hurricane -during the season (july-nov). otherwise show an image
-# from weather.com of the US weather. See the script below for more info:
 cd ~/Documents
+
 # enable monitor dimming in off hours
 ./dimmer.sh & 
 
+# generate a cones html for the active hurricane -during the season (july-nov). otherwise show an image
+# from weather.com of the US weather. See the script below for more info:
 # generate hurricane cones if in season...
 ./cones.sh & 
 
@@ -43,10 +47,12 @@ firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecas
 	-new-tab "file:///home/admin/Documents/cones.html" \
 	-new-tab https://surfcaptain.com/forecast/rodanthe-north-carolina \
 	-new-tab https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/ \
+	-new-tab "file:///home/admin/Documents/surf-temp.html" \
 	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  &
 
 
 
+exit
 
 #fetch most recent config from cloud to make sure urls are up to date
 
