@@ -51,7 +51,6 @@ firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecas
 	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  &
 
 
-
 exit
 
 #fetch most recent config from cloud to make sure urls are up to date
