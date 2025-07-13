@@ -23,10 +23,12 @@
   </div>
 
   <script>
-    const API_KEY = '68695a2e24e998.69900337'; // Replace with your EODHD API key
-    const SYMBOL = 'SPY.US';
+    // wget -dv "https://eodhd.com/api/intraday/AAPL.US?date=2025-07-10&range=1&api_token=demo&interval=5m&fmt=json" -O 5min.json
+    // const API_KEY = '68695a2e24e998.69900337'; // myr EODHD API key doesnt suppor 5min
+    const API_KEY = 'demo'; 
+    const SYMBOL = 'AAPL.US';
     const INTERVAL = '5m';
-    const API_URL = `https://eodhd.com/api/intraday/${SYMBOL}?api_token=${API_KEY}&interval=${INTERVAL}&fmt=json`;
+    const API_URL = `https://eodhd.com/api/intraday/${SYMBOL}?api_token=${API_KEY}&interval=${INTERVAL}&range=1&date=2025-07-10&fmt=json`;
 
     async function fetchData() {
       const res = await fetch(API_URL);
@@ -100,8 +102,8 @@ function setupDraggableViewport(canvas, chart) {
   resizeCanvas();
 }
 
-    async function drawChart() {
-      const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+async function drawChart() {
+    const chart = LightweightCharts.createChart(document.getElementById('chart'), {
         layout: {
           background: { color: '#ffffff' },
           textColor: '#000',
