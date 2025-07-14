@@ -142,15 +142,27 @@ async function drawChart() {
         height: window.innerHeight,
       });
 
-      chart.timeScale().setVisibleLogicalRange({
-          from: 1,
-          to: 80,
-      });
-
-      const candleSeries = chart.addCandlestickSeries();
       const data = await fetchData();
 	// there are nulls in that data that just came back, they suck.
       jsonData = sanitizeJSON(data);
+
+    const totalBars = jsonData.length;
+    const visibleBars = 90;
+
+    if (totalBars > visibleBars) {
+    const to = totalBars - 1; // Last bar index
+    const from = totalBars - visibleBars; 
+
+      chart.timeScale().setVisibleLogicalRange({
+          from: from,
+          to: to,
+      });
+    } else {
+  	// If there are fewer than 96 bars, fit all content
+  	chart.timeScale().fitContent();
+    }
+
+      const candleSeries = chart.addCandlestickSeries();
       candleSeries.setData(jsonData);
 
       const emaData = calculateEMA(jsonData);
