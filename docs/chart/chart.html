@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1" />
   <title>TEST 5-Minute Candlestick Chart with EMA</title>
   <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
   <style>
@@ -13,16 +12,32 @@
       width: 100%;
       height: 600px;
     }
+   #overlay {
+  	position: fixed;
+  	top: 0;
+  	left: 100px; /* Reveals 100px of content on the left */
+  	width: calc(100% - 100px);
+  	height: 100%;
+  	background-color: rgba(128, 128, 128, 0.9); /* Soft gray */
+  	cursor: grab;
+  	touch-action: none;
+  	z-index: 9999;
+    }
   </style>
 </head>
 <body>
+  <div id="overlay"></div>
   <div id="chart"></div>
   <div id="chart-wrapper" style="position: relative; width: 100%; height: 100%;">
     <div id="chart" style="width: 100%; height: 100%;"></div>
-    <canvas id="viewport" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: auto;"></canvas>
   </div>
 
   <script>
+
+    window.addEventListener('DOMContentLoaded', () => {
+  	enableOverlayDrag();
+    });
+
     // wget -dv "https://eodhd.com/api/intraday/AAPL.US?date=2025-07-10&range=1&api_token=demo&interval=5m&fmt=json" -O 5min.json
     // const API_KEY = '68695a2e24e998.69900337'; // myr EODHD API key doesnt suppor 5min
     const API_KEY = 'demo'; 
@@ -30,7 +45,7 @@
     const INTERVAL = '5m';
     const API_URL = `https://eodhd.com/api/intraday/${SYMBOL}?api_token=${API_KEY}&interval=${INTERVAL}&range=1&date=2025-07-10&fmt=json`;
 
-    async function fetchData() {
+  async function fetchData() {
       const res = await fetch(API_URL);
       const raw = await res.json();
 
@@ -42,6 +57,45 @@
         close: d.close
       }));
     }
+
+function enableOverlayDrag(overlayId = 'overlay') {
+  const overlay = document.getElementById(overlayId);
+  let startX = 0;
+  let offsetX = parseInt(overlay.style.left, 10) || 0;
+  let dragging = false;
+
+  // Mouse Events
+  overlay.addEventListener('mousedown', e => {
+    dragging = true;
+    startX = e.clientX - offsetX;
+    overlay.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mouseup', () => {
+    dragging = false;
+    overlay.style.cursor = 'grab';
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (dragging) {
+      offsetX = e.clientX - startX;
+      overlay.style.left = Math.max(0, offsetX) + 'px';
+      overlay.style.width = `calc(100% - ${Math.max(0, offsetX)}px)`;
+    }
+  });
+
+  // Touch Events
+  overlay.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX - offsetX;
+  }, { passive: false });
+
+  overlay.addEventListener('touchmove', e => {
+    offsetX = e.touches[0].clientX - startX;
+    overlay.style.left = Math.max(0, offsetX) + 'px';
+    overlay.style.width = `calc(100% - ${Math.max(0, offsetX)}px)`;
+  }, { passive: false });
+}
+
 
 function sanitizeJSON(data) {
   if (data === null || data === "null" || data === "") {
@@ -65,7 +119,7 @@ function sanitizeJSON(data) {
   return data;
 }
 
-    function calculateEMA(data, period = 20) {
+ function calculateEMA(data, period = 20) {
       const ema = [];
       let multiplier = 2 / (period + 1);
       let prevEma;
@@ -83,46 +137,7 @@ function sanitizeJSON(data) {
       });
 
       return ema;
-    }
-
-function setupDraggableViewport(canvas, chart) {
-  const ctx = canvas.getContext('2d');
-  let dragging = false;
-  let rectX = 100;
-  let rectWidth = 300;
-
-  function resizeCanvas() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    draw();
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
-    ctx.fillRect(rectX, 0, rectWidth, canvas.height);
-  }
-
-  canvas.addEventListener('mousedown', (e) => {
-    if (e.offsetX > rectX && e.offsetX < rectX + rectWidth) {
-      dragging = true;
-    }
-  });
-
-  canvas.addEventListener('mousemove', (e) => {
-    if (dragging) {
-      rectX = Math.max(0, Math.min(e.offsetX - rectWidth / 2, canvas.width - rectWidth));
-      draw();
-    }
-  });
-
-  canvas.addEventListener('mouseup', () => {
-    dragging = false;
-  });
-
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-}
+ }
 
 async function drawChart() {
     const chart = LightweightCharts.createChart(document.getElementById('chart'), {
@@ -172,7 +187,6 @@ async function drawChart() {
     }
 
     drawChart();
-    setupDraggableViewport(document.getElementById('viewport'), chart);
 
   </script>
 </body>
