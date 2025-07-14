@@ -38,25 +38,73 @@
   	enableOverlayDrag();
     });
 
+    // Welcome to Alpha Vantage! Your API key is: AGZBH691MMN9G7IM. 
+
     // wget -dv "https://eodhd.com/api/intraday/AAPL.US?date=2025-07-10&range=1&api_token=demo&interval=5m&fmt=json" -O 5min.json
-    // const API_KEY = '68695a2e24e998.69900337'; // myr EODHD API key doesnt suppor 5min
-    const API_KEY = 'demo'; 
-    const SYMBOL = 'AAPL.US';
-    const INTERVAL = '5m';
-    const API_URL = `https://eodhd.com/api/intraday/${SYMBOL}?api_token=${API_KEY}&interval=${INTERVAL}&range=1&date=2025-07-10&fmt=json`;
+    // const API_KEY = '68695a2e24e998.69900337'; // my EODHD API key doesnt suppor 5min
+    const API_KEY = 'AGZBH691MMN9G7IM'; 
+    const SYMBOL = 'SPY';
+    const INTERVAL = '5min';
+//  const EODHD_API_URL = `https://eodhd.com/api/intraday/${SYMBOL}?api_token=${API_KEY}&interval=${INTERVAL}&range=1&date=2025-07-10&fmt=json`;
+//    const ALPHA_API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=SPY&interval=5min&outputsize=full&apikey=AGZBH691MMN9G7IMi`;
+    const API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${SYMBOL}&interval=${INTERVAL}&outputsize=full&apikey=${API_KEY}`;
+
+function normalizeAlphaVantageData(rawJson) {
+  const timeSeries = rawJson['Time Series (5min)'];
+  if (!timeSeries) {
+    console.error('Invalid Alpha Vantage data structure.');
+    return [];
+  }
+
+  const normalized = Object.entries(timeSeries).map(([timestamp, values]) => {
+    return {
+      time: Math.floor(new Date(timestamp).getTime() / 1000),  // UNIX timestamp in seconds
+      open: parseFloat(values['1. open']),
+      high: parseFloat(values['2. high']),
+      low: parseFloat(values['3. low']),
+      close: parseFloat(values['4. close']),
+    };
+  });
+
+  // Sort by time ascending (required for proper chart rendering)
+  normalized.sort((a, b) => a.time - b.time);
+
+  return normalized;
+}
+
 
   async function fetchData() {
       const res = await fetch(API_URL);
       const raw = await res.json();
 
-      return raw.map(d => ({
-        time: Math.floor(new Date(d.datetime).getTime() / 1000),
-        open: d.open,
-        high: d.high,
-        low: d.low,
-        close: d.close
-      }));
+    const timeSeries = raw['Time Series (5min)'];
+    if (!timeSeries) {
+      console.error('Invalid Alpha Vantage data structure.');
+      return [];
     }
+  const normalized = Object.entries(timeSeries).map(([timestamp, values]) => {
+    return {
+      time: Math.floor(new Date(timestamp).getTime() / 1000),  // UNIX timestamp in seconds
+      open: parseFloat(values['1. open']),
+      high: parseFloat(values['2. high']),
+      low: parseFloat(values['3. low']),
+      close: parseFloat(values['4. close']),
+    };
+  });
+
+  // Sort by time ascending (required for proper chart rendering)
+  normalized.sort((a, b) => a.time - b.time);
+
+  return normalized;
+
+//      return raw.map(d => ({
+//        time: Math.floor(new Date(d.datetime).getTime() / 1000),
+//        open: d.open,
+//        high: d.high,
+//        low: d.low,
+//        close: d.close
+//      }));
+  }
 
 function enableOverlayDrag(overlayId = 'overlay') {
   const overlay = document.getElementById(overlayId);
@@ -157,8 +205,13 @@ async function drawChart() {
         height: window.innerHeight,
       });
 
+      // get some data from API endpoint
       const data = await fetchData();
-	// there are nulls in that data that just came back, they suck.
+
+      // restructure the alpha response json
+      // const normalData = normalizeAlphaVantageData(data);
+
+	// if there are nulls in that data that just came back, they suck.
       jsonData = sanitizeJSON(data);
 
     const totalBars = jsonData.length;
