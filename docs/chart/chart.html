@@ -43,6 +43,28 @@
       }));
     }
 
+function sanitizeJSON(data) {
+  if (data === null || data === "null" || data === "") {
+    return 0;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(sanitizeJSON);
+  }
+
+  if (typeof data === "object") {
+    const sanitized = {};
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        sanitized[key] = sanitizeJSON(data[key]);
+      }
+    }
+    return sanitized;
+  }
+
+  return data;
+}
+
     function calculateEMA(data, period = 20) {
       const ema = [];
       let multiplier = 2 / (period + 1);
@@ -122,9 +144,11 @@ async function drawChart() {
 
       const candleSeries = chart.addCandlestickSeries();
       const data = await fetchData();
-      candleSeries.setData(data);
+	// there are nulls in that data that just came back, they suck.
+      jsonData = sanitizeJSON(data);
+      candleSeries.setData(jsonData);
 
-      const emaData = calculateEMA(data);
+      const emaData = calculateEMA(jsonData);
       const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
       emaSeries.setData(emaData);
 
