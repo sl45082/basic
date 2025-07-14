@@ -139,7 +139,12 @@ async function drawChart() {
           secondsVisible: false,
         },
         width: window.innerWidth,
-        height: 600,
+        height: window.innerHeight,
+      });
+
+      chart.timeScale().setVisibleLogicalRange({
+          from: 1,
+          to: 80,
       });
 
       const candleSeries = chart.addCandlestickSeries();
