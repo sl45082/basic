@@ -18,7 +18,7 @@
   	left: 100px; /* Reveals 100px of content on the left */
   	width: calc(100% - 100px);
   	height: 100%;
-  	background-color: rgba(128, 128, 128, 0.9); /* Soft gray */
+  	background-color: rgba(128, 128, 128, 1.0); /* Soft gray, fully opaque */
   	cursor: grab;
   	touch-action: none;
   	z-index: 9999;
@@ -27,7 +27,7 @@
 </head>
 <body>
   <div id="overlay"></div>
-  <div id="chart"></div>
+
   <div id="chart-wrapper" style="position: relative; width: 100%; height: 100%;">
     <div id="chart" style="width: 100%; height: 100%;"></div>
   </div>
@@ -49,6 +49,7 @@
 //    const ALPHA_API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=SPY&interval=5min&outputsize=full&apikey=AGZBH691MMN9G7IMi`;
     const API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${SYMBOL}&interval=${INTERVAL}&outputsize=full&apikey=${API_KEY}`;
 
+// currently a dead function, but may need it to filter on trading hours
 function normalizeAlphaVantageData(rawJson) {
   const timeSeries = rawJson['Time Series (5min)'];
   if (!timeSeries) {
@@ -82,6 +83,7 @@ function normalizeAlphaVantageData(rawJson) {
       console.error('Invalid Alpha Vantage data structure.');
       return [];
     }
+  // this aplha api specific stuff, every api needs their own impl
   const normalized = Object.entries(timeSeries).map(([timestamp, values]) => {
     return {
       time: Math.floor(new Date(timestamp).getTime() / 1000),  // UNIX timestamp in seconds
@@ -97,13 +99,6 @@ function normalizeAlphaVantageData(rawJson) {
 
   return normalized;
 
-//      return raw.map(d => ({
-//        time: Math.floor(new Date(d.datetime).getTime() / 1000),
-//        open: d.open,
-//        high: d.high,
-//        low: d.low,
-//        close: d.close
-//      }));
   }
 
 function enableOverlayDrag(overlayId = 'overlay') {
@@ -187,6 +182,37 @@ function sanitizeJSON(data) {
       return ema;
  }
 
+ function filterCandlesByTimeWindow(candleJson) {
+   const easternOffsetMs = -5 * 60 * 60 * 1000;
+   const latestDate = getLatestTradingDateET(candleJson);
+
+   return candleJson.filter(candle => {
+     const utcDate = new Date(candle.time * 1000);
+     const etDate = new Date(utcDate.getTime() + easternOffsetMs);
+
+     const dateStr = etDate.toISOString().slice(0, 10);
+     const hour = etDate.getHours();
+     const minutes = etDate.getMinutes();
+
+     // Must be on latest trading date and within 9:30 to 16:00 ET
+     const isInHours = (hour > 9 || (hour === 9 && minutes >= 30)) && (hour < 16);
+     return dateStr === latestDate && isInHours;
+   });
+  }
+
+  function getLatestTradingDateET(candleJson) {
+      const easternOffsetMs = -5 * 60 * 60 * 1000; // UTC−5 offset in milliseconds
+      const dates = candleJson.map(candle => {
+        const utcDate = new Date(candle.time * 1000);
+        const etDate = new Date(utcDate.getTime() + easternOffsetMs);
+        return etDate.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+      });
+
+      const uniqueDates = [...new Set(dates)];
+      uniqueDates.sort(); // Ascending
+      return uniqueDates[uniqueDates.length - 1]; // Latest full trading date
+    }
+
 async function drawChart() {
     const chart = LightweightCharts.createChart(document.getElementById('chart'), {
         layout: {
@@ -211,9 +237,11 @@ async function drawChart() {
       // restructure the alpha response json
       // const normalData = normalizeAlphaVantageData(data);
 
-	// if there are nulls in that data that just came back, they suck.
-      jsonData = sanitizeJSON(data);
+    // there can be nulls in that data that just came back, defend.
+    jsonData = sanitizeJSON(data);
 
+    
+/*    
     const totalBars = jsonData.length;
     const visibleBars = 90;
 
@@ -229,13 +257,33 @@ async function drawChart() {
   	// If there are fewer than 96 bars, fit all content
   	chart.timeScale().fitContent();
     }
+*/
+    chart.timeScale().fitContent();
+    const candleSeries = chart.addCandlestickSeries();
 
-      const candleSeries = chart.addCandlestickSeries();
-      candleSeries.setData(jsonData);
+   // Filter to include only last trade day and 9 AM to 5 PM candles
+    const filteredJson = filterCandlesByTimeWindow(jsonData);
 
-      const emaData = calculateEMA(jsonData);
-      const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
-      emaSeries.setData(emaData);
+    const totalBars = jsonData.length;
+    const visibleBars = 97;
+
+    if (totalBars > visibleBars) {
+    const to = totalBars - 1; // Last bar index
+    const from = totalBars - visibleBars;
+    chart.timeScale().setVisibleLogicalRange({
+      from: from,
+      to: to,
+    });
+  } else {
+    // If there are fewer than 97 bars, fit all content
+    chart.timeScale().fitContent();
+  }
+
+    candleSeries.setData(jsonData);
+
+    const emaData = calculateEMA(jsonData);
+    const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
+    emaSeries.setData(emaData);
 
     }
 
