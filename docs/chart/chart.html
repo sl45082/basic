@@ -183,19 +183,20 @@ function sanitizeJSON(data) {
  }
 
  function filterCandlesByTimeWindow(candleJson) {
-   const easternOffsetMs = -5 * 60 * 60 * 1000;
+  // AKAIK the data is already EST time zone
+  // const easternOffsetMs = -5 * 60 * 60 * 1000;
    const latestDate = getLatestTradingDateET(candleJson);
 
    return candleJson.filter(candle => {
      const utcDate = new Date(candle.time * 1000);
-     const etDate = new Date(utcDate.getTime() + easternOffsetMs);
+     const etDate = new Date(utcDate.getTime()); // + easternOffsetMs);
 
      const dateStr = etDate.toISOString().slice(0, 10);
      const hour = etDate.getHours();
      const minutes = etDate.getMinutes();
 
-     // Must be on latest trading date and within 9:30 to 16:00 ET
-     const isInHours = (hour > 9 || (hour === 9 && minutes >= 30)) && (hour < 16);
+     // Must be on latest trading date and within 9:00 to 17:00 ET
+     const isInHours = (hour > 8 && hour < 17);
      return dateStr === latestDate && isInHours;
    });
   }
@@ -264,7 +265,7 @@ async function drawChart() {
    // Filter to include only last trade day and 9 AM to 5 PM candles
     const filteredJson = filterCandlesByTimeWindow(jsonData);
 
-    const totalBars = jsonData.length;
+    const totalBars = filteredJson.length;
     const visibleBars = 97;
 
     if (totalBars > visibleBars) {
@@ -279,9 +280,9 @@ async function drawChart() {
     chart.timeScale().fitContent();
   }
 
-    candleSeries.setData(jsonData);
+    candleSeries.setData(filteredJson);
 
-    const emaData = calculateEMA(jsonData);
+    const emaData = calculateEMA(filteredJson);
     const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
     emaSeries.setData(emaData);
 
