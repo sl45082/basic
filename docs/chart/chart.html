@@ -214,7 +214,7 @@ function sanitizeJSON(data) {
 
       const uniqueDates = [...new Set(dates)];
       uniqueDates.sort(); // Ascending
-      return uniqueDates[uniqueDates.length - 2]; // latest may be partial, so go back another day
+      return uniqueDates[uniqueDates.length - 2]; // latest may be partial, so go back 2 days, not sure....
     }
 
 async function drawChart() {
@@ -245,6 +245,12 @@ async function drawChart() {
     jsonData = sanitizeJSON(data);
 
     chart.timeScale().fitContent();
+    chart.applyOptions({
+     timeScale: {
+      visible: false
+      }
+    });
+
     const candleSeries = chart.addCandlestickSeries();
 
    // Filter to include only last trade day and 9 AM to 5 PM candles
