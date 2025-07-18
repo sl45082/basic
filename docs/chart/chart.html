@@ -49,7 +49,10 @@
 //    const ALPHA_API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=SPY&interval=5min&outputsize=full&apikey=AGZBH691MMN9G7IMi`;
     const API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${SYMBOL}&interval=${INTERVAL}&outputsize=full&apikey=${API_KEY}`;
 
+// magic number for proper UTC/timezone to lightweight charts graphing time line
+
 // currently a dead function, but may need it to filter on trading hours
+/*
 function normalizeAlphaVantageData(rawJson) {
   const timeSeries = rawJson['Time Series (5min)'];
   if (!timeSeries) {
@@ -72,7 +75,7 @@ function normalizeAlphaVantageData(rawJson) {
 
   return normalized;
 }
-
+*/
 
   async function fetchData() {
       const res = await fetch(API_URL);
@@ -86,7 +89,7 @@ function normalizeAlphaVantageData(rawJson) {
   // this aplha api specific stuff, every api needs their own impl
   const normalized = Object.entries(timeSeries).map(([timestamp, values]) => {
     return {
-      time: Math.floor(new Date(timestamp).getTime() / 1000),  // UNIX timestamp in seconds
+      time: Math.floor(new Date(timestamp).getTime() / 1000) +  (5 * 60 * 60),  // UTC timestamp in seconds
       open: parseFloat(values['1. open']),
       high: parseFloat(values['2. high']),
       low: parseFloat(values['3. low']),
@@ -184,12 +187,12 @@ function sanitizeJSON(data) {
 
  function filterCandlesByTimeWindow(candleJson) {
   // AKAIK the data is already EST time zone
-  // const easternOffsetMs = -5 * 60 * 60 * 1000;
-   const latestDate = getLatestTradingDateET(candleJson);
+  const easternOffsetMs = -5 * 60 * 60 * 1000;
+  const latestDate = getLatestTradingDateET(candleJson);
 
    return candleJson.filter(candle => {
      const utcDate = new Date(candle.time * 1000);
-     const etDate = new Date(utcDate.getTime()); // + easternOffsetMs);
+     const etDate = new Date(utcDate.getTime() + easternOffsetMs);
 
      const dateStr = etDate.toISOString().slice(0, 10);
      const hour = etDate.getHours();
@@ -211,7 +214,7 @@ function sanitizeJSON(data) {
 
       const uniqueDates = [...new Set(dates)];
       uniqueDates.sort(); // Ascending
-      return uniqueDates[uniqueDates.length - 1]; // Latest full trading date
+      return uniqueDates[uniqueDates.length - 2]; // latest may be partial, so go back another day
     }
 
 async function drawChart() {
@@ -241,34 +244,16 @@ async function drawChart() {
     // there can be nulls in that data that just came back, defend.
     jsonData = sanitizeJSON(data);
 
-    
-/*    
-    const totalBars = jsonData.length;
-    const visibleBars = 90;
-
-    if (totalBars > visibleBars) {
-    const to = totalBars - 1; // Last bar index
-    const from = totalBars - visibleBars; 
-
-      chart.timeScale().setVisibleLogicalRange({
-          from: from,
-          to: to,
-      });
-    } else {
-  	// If there are fewer than 96 bars, fit all content
-  	chart.timeScale().fitContent();
-    }
-*/
     chart.timeScale().fitContent();
     const candleSeries = chart.addCandlestickSeries();
 
    // Filter to include only last trade day and 9 AM to 5 PM candles
-    const filteredJson = filterCandlesByTimeWindow(jsonData);
+  const filteredJson = filterCandlesByTimeWindow(jsonData);
 
-    const totalBars = filteredJson.length;
-    const visibleBars = 97;
+  const totalBars = filteredJson.length;
+  const visibleBars = 97;
 
-    if (totalBars > visibleBars) {
+  if (totalBars > visibleBars) {
     const to = totalBars - 1; // Last bar index
     const from = totalBars - visibleBars;
     chart.timeScale().setVisibleLogicalRange({
@@ -280,13 +265,13 @@ async function drawChart() {
     chart.timeScale().fitContent();
   }
 
-    candleSeries.setData(filteredJson);
+  candleSeries.setData(filteredJson);
 
-    const emaData = calculateEMA(filteredJson);
-    const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
-    emaSeries.setData(emaData);
+  const emaData = calculateEMA(filteredJson);
+  const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
+  emaSeries.setData(emaData);
 
-    }
+}
 
     drawChart();
 

@@ -48,7 +48,8 @@ firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecas
 	-new-tab https://surfcaptain.com/forecast/rodanthe-north-carolina \
 	-new-tab https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/ \
 	-new-tab "file:///home/admin/Documents/surf-temp.html" \
-	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  &
+	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998 \ 
+	-new-tab https://www.star.nesdis.noaa.gov/goes/sector_band.php?sat=G19&sector=eus&band=11&length=71&dim=1 & 
 
 
 exit
