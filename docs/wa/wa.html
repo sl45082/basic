@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Full Screen PNG Cycler</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    #image-viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="image-viewer"></div>
+
+  <script>
+    const baseUrl = 'https://littleboquet.s3.us-east-1.amazonaws.com/alexa/80s/';
+    const images = ['108x108.png', '1200x800.png', '512x512.png', '720x480.png', '108x108.png'];
+    let index = 0;
+
+    function showNextImage() {
+      const viewer = document.getElementById('image-viewer');
+      viewer.style.backgroundImage = `url(${baseUrl + images[index]})`;
+      index = (index + 1) % images.length;
+      setTimeout(showNextImage, 5000); // Wait x seconds before showing next
+    }
+
+    // Kick it off
+    window.onload = showNextImage;
+  </script>
+</body>
+</html>
+
+
