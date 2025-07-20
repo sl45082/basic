@@ -14,12 +14,15 @@
     }
     #image-viewer {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 50%;
+      left: 50%;
       height: 100vh;
       width: 100vw;
-      background-size: cover;
+      background-size: contain;
       background-position: center;
+      background-repeat: no-repeat;
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 0.5s ease;
     }
   </style>
 </head>
@@ -28,13 +31,29 @@
 
   <script>
     const baseUrl = 'https://littleboquet.s3.us-east-1.amazonaws.com/alexa/80s/';
-    const images = ['108x108.png', '1200x800.png', '512x512.png', '720x480.png', '108x108.png'];
+    const images = [
+      { filename: '108x108.png', zoom: 50 },
+      { filename: '1200x800.png', zoom: 150},
+      { filename: '512x512.png',  zoom: 70},
+      { filename: '720x480.png',  zoom: 10},
+      { filename: '108x108.png',  zoom: 125}
+    ];
     let index = 0;
 
     function showNextImage() {
       const viewer = document.getElementById('image-viewer');
-      viewer.style.backgroundImage = `url(${baseUrl + images[index]})`;
+      const current = images[index];
+
+      viewer.style.backgroundImage = `url(${baseUrl + current.filename})`;
+
+      // Apply zoom level (convert percent to scale factor)
+      const scale = current.zoom / 100;
+      viewer.style.transform = `translate(-50%, -50%) scale(${scale})`;
+
+      // advance to next image
       index = (index + 1) % images.length;
+
+      //schedule next image	
       setTimeout(showNextImage, 5000); // Wait x seconds before showing next
     }
 
