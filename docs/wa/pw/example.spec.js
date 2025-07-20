@@ -14,7 +14,7 @@ test('capture screenshots', async ({ page }) => {
   await page.goto('https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest');
   const title = await page.title();
   await page.evaluate(() => {
-    window.scrollTo(0, 300); // Scroll to y pixels
+    window.scrollTo(0, 350); // Scroll to y pixels
   });
   // await page.waitForTimeout(5000); // pauses for 3 second
   await page.screenshot({ path: '/tmp/wa/tides.png' });
