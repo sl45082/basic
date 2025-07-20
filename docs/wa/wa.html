@@ -24,10 +24,18 @@
       transform: translate(-50%, -50%) scale(1);
       transition: transform 0.5s ease;
     }
+    audio {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div id="image-viewer"></div>
+  <audio id="noaa-radio" src="https://radio.weatherusa.net/NWR/KHB37_3.mp3" preload="none"></audio>
+  <audio id="rock-radio" src="http://mediaserv68.live-streams.nl:8070/stream" preload="none" autoplay></audio>
+
+  <button id="start-btn" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    padding: 1em 2em; font-size: 1.2em;">Start Weather</button>
 
   <script>
     const baseUrl = 'https://littleboquet.s3.us-east-1.amazonaws.com/alexa/80s/';
@@ -39,7 +47,10 @@
       { filename: '108x108.png',  zoom: 125}
     ];
     let index = 0;
+    const viewer = document.getElementById('image-viewer');
+    const radio = document.getElementById('radio');
 
+    // function to iterate through images
     function showNextImage() {
       const viewer = document.getElementById('image-viewer');
       const current = images[index];
@@ -57,8 +68,35 @@
       setTimeout(showNextImage, 5000); // Wait x seconds before showing next
     }
 
+    // function to play noaa radio
+    function playWeatherRadio() {
+
+      const noaaRadio = document.getElementById('noaa-radio');
+      const rockRadio = document.getElementById('rock-radio');
+
+     // Pause the secondary stream
+     rockRadio.pause();
+
+     // Start weather stream
+     noaaRadio.play().catch(err => console.warn("noaa stream failed:", err));
+
+     // Stop weather after 3 minutes and resume secondary
+     setTimeout(() => {
+       noaaRadio.pause();
+       noaaRadio.currentTime = 0;
+       rockRadio.play().catch(err => console.warn("rockRadio stream failed:", err));
+     }, 3 * 60 * 1000);
+
+    }
+
     // Kick it off
-    window.onload = showNextImage;
+    document.getElementById('start-btn').onclick = () => {
+        document.getElementById('start-btn').remove();
+        showNextImage();
+        playWeatherRadio(); // Initial broadcast
+        setInterval(playWeatherRadio, 22 * 60 * 1000); // Repeat every 22 min
+    };
+
   </script>
 </body>
 </html>
