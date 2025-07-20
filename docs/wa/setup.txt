@@ -1,0 +1,19 @@
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+nvm use 24
+nvm alias default 24
+
+nvm install node
+
+mkdir pw
+cd pw
+npm init -y
+
+npm install -D @playwright/test
+npx playwright install
+
+npx playwright test --trace on
