@@ -17,6 +17,6 @@ test('capture screenshots', async ({ page }) => {
     window.scrollTo(0, 300); // Scroll to y pixels
   });
   // await page.waitForTimeout(5000); // pauses for 3 second
-  await page.screenshot({ path: '/tmp/tides.png' });
+  await page.screenshot({ path: '/tmp/wa/tides.png' });
 });
 
