@@ -6,7 +6,10 @@ const { chromium } = require('playwright');
 test('capture surfchex1', async ({ page }) => {
  const browser = await chromium.launch({
     headless: true,
-    args: ['--kiosk']
+    args: [
+	'--kiosk',
+	'--window-size=1920,1080'
+    ]
   });
 
   await page.goto('https://surfchex.intelliweather.net/imagery/Surfchex/rad_nc_moreheadcity_640x480.htm');

@@ -6,7 +6,10 @@ const { chromium } = require('playwright');
 test('capture surfchex2', async ({ page }) => {
  const browser = await chromium.launch({
     headless: true,
-    args: ['--kiosk']
+    args: [
+	'--kiosk',
+	'--window-size=1920,1080'
+    ]
   });
 
   await page.goto('https://surfchex.intelliweather.net/imagery/Surfchex/satrad_reg_640x480.htm');

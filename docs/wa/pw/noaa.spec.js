@@ -6,7 +6,10 @@ const { chromium } = require('playwright');
 test('capture noaa radar', async ({ page }) => {
  const browser = await chromium.launch({
     headless: true,
-    args: ['--kiosk']
+    args: [
+	'--kiosk',
+	'--window-size=1920,900'
+    ]
   });
 
   await page.goto('https://www.star.nesdis.noaa.gov/goes/sector_band.php?sat=G19&sector=eus&band=11&length=71&dim=1 &');

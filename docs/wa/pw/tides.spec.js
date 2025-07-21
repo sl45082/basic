@@ -6,7 +6,10 @@ const { chromium } = require('playwright');
 test('capture tide', async ({ page }) => {
  const browser = await chromium.launch({
     headless: true,
-    args: ['--kiosk']
+    args: [
+	'--kiosk',
+	'--window-size=1920,1080'
+    ]
   });
 
   await page.goto('https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest');
