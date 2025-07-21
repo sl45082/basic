@@ -1,2 +1,2 @@
 
-*/20 6-20 * * * /usr/bin/bash -x /home/admin/Documents/basic/docs/wa/deploy.sh & 
+*/18,36,49 6-20 * * *	/usr/bin/bash -x /home/admin/Documents/basic/docs/wa/deploy.sh & 
