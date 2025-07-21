@@ -16,7 +16,7 @@ git status
 
 
 #  REMOVE THIS
-exit
+# exit
 
 git add *.png 
 git commit -m "checkin resources: $(date '+%Y-%m-%d %H:%M:%S')"

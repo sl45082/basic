@@ -9,7 +9,7 @@ test('capture ventusky', async ({ page }) => {
     args: ['--kiosk']
   });
 
-  await page.goto('https://embed.ventusky.com/?p=35.4;-79.0;5&l=rain-3h');
+  await page.goto('https://www.ventusky.com/?p=35.38;-73.56;6&l=rain-3h');
   const title = await page.title();
   await page.evaluate(() => {
     window.scrollTo(0, 5); // Scroll down y pixels
