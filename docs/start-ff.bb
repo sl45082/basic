@@ -52,8 +52,6 @@ firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecas
 	-new-tab https://www.star.nesdis.noaa.gov/goes/sector_band.php?sat=G19&sector=eus&band=11&length=71&dim=1 & 
 
 
-exit
-
 #fetch most recent config from cloud to make sure urls are up to date
 
 #sleep for a bit make sure wifi is up
