@@ -13,7 +13,7 @@ cd /home/admin/Documents/basic/docs/wa/pw
 
 date >> cron.log
 whereis npx >> cron.log
-npx playwright test --trace on
+npx playwright test --trace on >> cron.log
  
 # get all the images into the right dir and publish them
 cp ${IMAGEDIR}/* .
