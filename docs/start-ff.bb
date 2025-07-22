@@ -1,7 +1,6 @@
 #!/bin/bash 
 
-#export DESKTOP_SESSION=LXDE-pi-wayfire
-export DISPLAY=:2
+export WAYLAND_DISPLAY="wayland-0"
 
 # let network stack come up
 sleep 20
@@ -34,7 +33,7 @@ rm  -f ~/.mozilla/firefox/0iu377v3.default-release-1726962005538/xulstore.json
 #firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 
 sleep 10
-firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
+firefox --display=wayland-0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
 	-new-tab https://www.surfchex.com/cams/hatteras-web-cam/  \
 	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/rad_nc_moreheadcity_640x480.htm \
 	-new-tab https://www.surfchex.com/cams/avon/ \
