@@ -1,0 +1,90 @@
+Tue 22 Jul 07:49:01 EDT 2025
+npx: /home/admin/.nvm/versions/node/v24.4.1/bin/npx
+
+Running 13 tests using 2 workers
+
+Exiting early: marking test as passed
+  ✓  2 accuweather.spec.js:6:1 › capture accuweather (422ms)
+Exiting early: marking test as passed
+  ✓  3 avon.spec.js:6:1 › capture avon surf (198ms)
+  ✓  1 7day.spec.js:6:1 › capture 7day (8.8s)
+  ✓  5 cones.spec.js:6:1 › capture cones (1.4s)
+Exiting early: marking test as passed
+  ✓  6 hatteras.spec.js:6:1 › capture hatteras surf (233ms)
+  ✓  4 captain.spec.js:6:1 › capture captain (10.1s)
+  ✓  8 noaa.spec.js:6:1 › capture noaa radar (9.3s)
+Exiting early: marking test as passed
+  ✓  9 rodanthe.spec.js:6:1 › capture rodanthe surf (4.6s)
+  ✓  7 ikite.spec.js:6:1 › capture ikite (20.8s)
+  ✓  10 surfchex1.spec.js:6:1 › capture surfchex1 (6.3s)
+  ✓  12 tides.spec.js:6:1 › capture tide (4.2s)
+Exiting early: marking test as passed
+  ✓  13 waves-ocean.spec.js:6:1 › capture waves-ocean surf (213ms)
+  ✓  11 surfchex2.spec.js:6:1 › capture surfchex2 (9.4s)
+
+  13 passed (43.1s)
+git: /usr/bin/git /usr/share/man/man1/git.1.gz
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   7day.png
+	modified:   captain.png
+	modified:   ikite.png
+	modified:   noaa.png
+	modified:   surfchex1.png
+	modified:   tides.png
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	cron.log
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Tue 22 Jul 07:54:01 EDT 2025
+npx: /home/admin/.nvm/versions/node/v24.4.1/bin/npx
+
+Running 13 tests using 2 workers
+
+Exiting early: marking test as passed
+  ✓  2 accuweather.spec.js:6:1 › capture accuweather (434ms)
+Exiting early: marking test as passed
+  ✓  3 avon.spec.js:6:1 › capture avon surf (182ms)
+  ✓  1 7day.spec.js:6:1 › capture 7day (7.0s)
+  ✓  5 cones.spec.js:6:1 › capture cones (1.6s)
+Exiting early: marking test as passed
+  ✓  6 hatteras.spec.js:6:1 › capture hatteras surf (215ms)
+  ✓  4 captain.spec.js:6:1 › capture captain (10.4s)
+  ✓  8 noaa.spec.js:6:1 › capture noaa radar (9.0s)
+Exiting early: marking test as passed
+  ✓  9 rodanthe.spec.js:6:1 › capture rodanthe surf (3.0s)
+  ✓  7 ikite.spec.js:6:1 › capture ikite (20.6s)
+  ✓  10 surfchex1.spec.js:6:1 › capture surfchex1 (11.8s)
+  ✓  11 surfchex2.spec.js:6:1 › capture surfchex2 (10.8s)
+Exiting early: marking test as passed
+  ✓  13 waves-ocean.spec.js:6:1 › capture waves-ocean surf (343ms)
+  ✓  12 tides.spec.js:6:1 › capture tide (4.5s)
+
+  13 passed (43.4s)
+git: /usr/bin/git /usr/share/man/man1/git.1.gz
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   ../deploy.sh
+	modified:   7day.png
+	modified:   captain.png
+	modified:   ikite.png
+	modified:   noaa.png
+	modified:   surfchex1.png
+	modified:   tides.png
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	../.deploy.sh.swp
+	cron.log
+
+no changes added to commit (use "git add" and/or "git commit -a")

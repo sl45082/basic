@@ -11,6 +11,7 @@ rm -f ${IMAGEDIR}/*.png
 # generate an image for each page during test script
 cd /home/admin/Documents/basic/docs/wa/pw
 
+echo "Starting with deploy.sh" >> cron.log
 date >> cron.log
 whereis npx >> cron.log
 npx playwright test --trace on >> cron.log
@@ -27,4 +28,7 @@ git status >> cron.log
 
 git add *.png 
 git commit -m "checkin resources: $(date '+%Y-%m-%d %H:%M:%S')"
-git push --all
+git push --all >> cron.log
+
+date >> cron.log
+echo "Finish with deploy.sh" >> cron.log
