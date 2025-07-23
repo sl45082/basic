@@ -16,19 +16,25 @@ date >> cron.log
 whereis npx >> cron.log
 npx playwright test --trace on >> cron.log
  
-# get all the images into the right dir and publish them
+# grab some radio from nova rock
+echo "fetching radio mp3" >> cron.log
+wget http://93.190.137.196:8427/ -O /tmp/wa/nlradio.mp3 & 
+nlpid=$!
+
+# sleep for a little to get some radio content
+sleep 420
+kill $nlpid
+
+# get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
 
 whereis git >> cron.log
 git status >> cron.log
 
-
-#  REMOVE THIS
-# exit
-
-git add *.png 
+git add *.png *.mp3
 git commit -m "checkin resources: $(date '+%Y-%m-%d %H:%M:%S')"
 git push --all >> cron.log
 
 date >> cron.log
 echo "Finish with deploy.sh" >> cron.log
+
