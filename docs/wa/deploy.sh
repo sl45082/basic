@@ -35,6 +35,8 @@ convert tides.png -crop 980x770+0+150 +repage tides1.png
 mv tides1.png tides.png
 convert noaa.png -crop 1130x680+0+0 +repage noaa1.png
 mv noaa1.png noaa.png
+convert accuweather.png -crop 1080x924+100+100 +repage accuweather1.png
+mv accuweather1.png accuweather.png
 
 # grab water temp animated gif
 cp /home/admin/Documents/surf-temp.gif .
