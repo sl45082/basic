@@ -36,10 +36,13 @@ mv tides1.png tides.png
 convert noaa.png -crop 1130x680+0+0 +repage noaa1.png
 mv noaa1.png noaa.png
 
+# grab water temp animated gif
+cp /home/admin/Documents/surf-temp.gif .
+
 whereis git >> cron.log
 git status >> cron.log
 
-git add *.png *.mp3
+git add *.png *.mp3 *.gif
 git commit -m "checkin resources: $(date '+%Y-%m-%d %H:%M:%S')"
 git push --all >> cron.log
 
