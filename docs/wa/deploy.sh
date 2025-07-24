@@ -28,6 +28,12 @@ kill $nlpid
 # get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
 
+# clean up some images
+convert captain.png -gravity North -chop 0x170 captain1.png
+mv captain1.png captain.png
+convert tides.png -crop 980x770+0+150 +repage tides1.png
+mv tides1.png tides.png
+
 whereis git >> cron.log
 git status >> cron.log
 

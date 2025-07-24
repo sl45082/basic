@@ -15,7 +15,7 @@ test('capture captain', async ({ page }) => {
   await page.goto('https://surfcaptain.com/forecast/rodanthe-north-carolina');
   const title = await page.title();
   await page.evaluate(() => {
-    window.scrollTo(0, 355); // Scroll down y pixels
+    window.scrollTo(0, 455); // Scroll down y pixels
   });
   // await page.waitForTimeout(5000); // pauses for 3 second
   await page.screenshot({ path: '/tmp/wa/captain.png' });
