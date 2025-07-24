@@ -16,15 +16,6 @@ date >> cron.log
 whereis npx >> cron.log
 npx playwright test --trace on >> cron.log
  
-# grab some radio from nova rock
-echo "fetching radio mp3" >> cron.log
-wget http://93.190.137.196:8427/ -O /tmp/wa/nlradio.mp3 & 
-nlpid=$!
-
-# sleep for a little to get some radio content
-sleep 420
-kill $nlpid
-
 # get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
 
@@ -40,6 +31,29 @@ mv accuweather1.png accuweather.png
 
 # grab water temp animated gif
 cp /home/admin/Documents/surf-temp.gif .
+
+# grab a chunk of video stream for hatteras, avon, waves-oceanside, rodanthe
+# avon pier
+wget "https://5b17d0ba29814.streamlock.net:9443/live/avon.stream/chunklist_w1479874796.m3u8" -O /tmp/chunklist_w1479874796.m3u8
+URL=`tail -1  /tmp/chunklist_w1479874796.m3u8`
+wget "https://5b17d0ba29814.streamlock.net:9443/live/avon.stream/${URL}" -O /tmp/aos.ts
+# grab 1st frame and put in a png
+ffmpeg -i /tmp/aos.ts -frames:v 1 /tmp/wa/aos.png
+# waves-coeanside
+wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/chunklist_w167089497.m3u8" -O /tmp/chunklist_w167089497.m3u8
+URL=`tail -1  /tmp/chunklist_w167089497.m3u8`
+wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/${URL}" -O /tmp/wos.ts
+# grab 1st frame and put in a png
+ffmpeg -i /tmp/wos.ts -frames:v 1 /tmp/wa/wos.png
+
+# grab some radio from nova rock
+echo "fetching radio mp3" >> cron.log
+wget http://93.190.137.196:8427/ -O /tmp/wa/nlradio.mp3 & 
+nlpid=$!
+
+# sleep for a little to get some radio content
+sleep 420
+kill $nlpid
 
 whereis git >> cron.log
 git status >> cron.log
