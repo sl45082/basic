@@ -14,7 +14,8 @@ cd /home/admin/Documents/basic/docs/wa/pw
 echo "Starting with deploy.sh" >> cron.log
 date >> cron.log
 whereis npx >> cron.log
-npx playwright test --trace on >> cron.log
+#npx playwright test --trace on >> cron.log
+npx playwright test --reporter=line >> cron.log
  
 # get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
