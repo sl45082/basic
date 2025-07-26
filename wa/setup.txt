@@ -1,0 +1,24 @@
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+nvm use 24
+nvm alias default 24
+
+nvm install node
+
+mkdir pw
+
+## from here down is basically a re-install of all the node dependencies
+## which get deleted if u clone the repo and are starting over on a new repo
+cd pw
+npm init -y
+
+npm install -D @playwright/test
+npx playwright install
+
+# npx playwright test --trace on
+# npx playwright test --trace on "capture captain"
+npx playwright test --reporter=line
