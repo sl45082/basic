@@ -11,9 +11,8 @@ do
 	date
 	echo "Working on ${i} \n"
 	git remote add origin git@github.com:sl45082/basic.git
-	git push --set-upstream origin main
 	git filter-repo --path ${i} --invert-paths --force
-	git push origin --force
+	git push --set-upstream origin main
 done
 
 
