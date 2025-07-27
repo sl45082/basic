@@ -14,8 +14,8 @@ cd /home/admin/Documents/basic/docs/wa/pw
 echo "Starting with deploy.sh" >> cron.log
 date >> cron.log
 whereis npx >> cron.log
-#npx playwright test --trace on >> cron.log
-npx playwright test --reporter=line >> cron.log
+npx playwright test --trace on >> cron.log
+#npx playwright test --reporter=line >> cron.log
  
 # get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
@@ -34,7 +34,7 @@ mv accuweather1.png accuweather.png
 cp /home/admin/Documents/surf-temp.gif .
 
 # make a date string to put in images
-DATESTR=`date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S"`
+DATESTR=`date "+%Y-%m-%d: %H:%M"`
 
 # grab a chunk of video stream for hatteras, avon, waves-oceanside, rodanthe
 # avon pier
