@@ -12,9 +12,14 @@ do
 	date
 	echo "Working on ${i} \n"
 	git remote add origin "$ORIGIN_URL"
-	git filter-repo --path ${i} --invert-paths --force
+	git filter-repo --path ${i} --invert-paths 
 	git remote add origin "$ORIGIN_URL"
-	git push --set-upstream origin main
+	git push --force --progress origin refs/heads/main
+	git checkout main
+
+exit
+
+
 done
 
 
