@@ -20,6 +20,11 @@ npx playwright test --trace on >> cron.log
 # get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
 
+#make sure we are on main branch
+git checkout main
+echo "Git brnches right now: \n" >> cron.log
+git branch -l >> cron.log
+
 # clean up some images
 convert captain.png -gravity North -chop 0x170 captain1.png
 mv captain1.png captain.png
