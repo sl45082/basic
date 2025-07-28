@@ -42,6 +42,8 @@ mv accuweather1.png accuweather.png
 # grab water temp animated gif
 cp /home/admin/Documents/surf-temp.gif .
 
+ls -asl /home/admin/Documents/surf-temp.gif ./surf-temp.gif >> cron.log
+
 # make a date string to put in images
 DATESTR=`date "+%Y-%m-%d: %H:%M"`
 
