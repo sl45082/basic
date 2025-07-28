@@ -25,7 +25,7 @@ ls -ltr *.png >> cron.log
 
 #make sure we are on main branch
 git checkout main
-echo "Git brnches right now: \n" >> cron.log
+echo "Git branches right now: \n" >> cron.log
 git branch -l >> cron.log
 
 pwd >> cron.log
@@ -72,7 +72,8 @@ wget http://93.190.137.196:8427/ -O /tmp/wa/nlradio.mp3 &
 nlpid=$!
 
 # sleep for a little to get some radio content
-sleep 420
+#sleep 420
+sleep 5
 kill $nlpid
 
 whereis git >> cron.log
