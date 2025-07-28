@@ -5,11 +5,12 @@ PATH=$PATH:/home/admin/.nvm/versions/node/v24.4.1/bin
 
 IMAGEDIR=/tmp/wa
 export GIT_SSH_COMMAND='ssh -i ~/.ssh/deploy_key'
+rm -r ${IMAGEDIR}
 mkdir ${IMAGEDIR}
-rm -f ${IMAGEDIR}/*.png
 
 # generate an image for each page during test script
 cd /home/admin/Documents/basic/docs/wa/pw
+rm -fv *.png
 
 echo "Starting with deploy.sh" >> cron.log
 date >> cron.log
@@ -19,12 +20,15 @@ npx playwright test --trace on >> cron.log
  
 # get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
+echo "new images from ${IMAGEDIR}:"
+ls -ltr *.png >> cron.log
 
 #make sure we are on main branch
 git checkout main
 echo "Git brnches right now: \n" >> cron.log
 git branch -l >> cron.log
 
+pwd >> cron.log
 # clean up some images
 convert captain.png -gravity North -chop 0x170 captain1.png
 mv captain1.png captain.png
