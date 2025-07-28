@@ -73,8 +73,9 @@ whereis git >> cron.log
 git status >> cron.log
 
 git add *.png *.mp3 *.gif
-git commit -m "checkin resources: $(date '+%Y-%m-%d %H:%M:%S')"
-git push --all >> cron.log
+git commit -m "checkin lwwa web resources: $(date '+%Y-%m-%d %H:%M:%S')"
+git push --set-upstream origin main >> cron.log
+# git push --all >> cron.log
 
 date >> cron.log
 echo "Finish with deploy.sh" >> cron.log
