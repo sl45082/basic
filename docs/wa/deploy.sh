@@ -47,7 +47,15 @@ ls -asl /home/admin/Documents/surf-temp.gif ./surf-temp.gif >> cron.log
 # make a date string to put in images
 DATESTR=`date "+%Y-%m-%d: %H:%M"`
 
-# grab a chunk of video stream for hatteras, avon, waves-oceanside, rodanthe
+# grab a png  of video streams for hatteras[TODO], avon, waves-oceanside, rodanthe, waves-sounside[TODO]
+# rodanthe pier
+wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthe.stream/chunklist_w144885282.m3u8" -O /tmp/chunklist_w144885282.m3u8
+URL=`tail -1  /tmp/chunklist_w144885282.m3u8`
+wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthe.stream/${URL}" -O /tmp/pos.ts
+# grab 1st frame and put in a png
+ffmpeg -i /tmp/pos.ts -frames:v 1 /tmp/wa/pos.png
+convert /tmp/wa/pos.png -gravity Northeast -fill black -pointsize 32 -annotate +20+20 "${DATESTR}" /tmp/wa/pos1.png
+
 # avon pier
 wget "https://5b17d0ba29814.streamlock.net:9443/live/avon.stream/chunklist_w1479874796.m3u8" -O /tmp/chunklist_w1479874796.m3u8
 URL=`tail -1  /tmp/chunklist_w1479874796.m3u8`
@@ -55,6 +63,7 @@ wget "https://5b17d0ba29814.streamlock.net:9443/live/avon.stream/${URL}" -O /tmp
 # grab 1st frame and put in a png
 ffmpeg -i /tmp/aos.ts -frames:v 1 /tmp/wa/aos.png
 convert /tmp/wa/aos.png -gravity Northeast -fill black -pointsize 32 -annotate +20+20 "${DATESTR}" /tmp/wa/aos1.png
+
 # waves-coeanside
 wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/chunklist_w167089497.m3u8" -O /tmp/chunklist_w167089497.m3u8
 URL=`tail -1  /tmp/chunklist_w167089497.m3u8`
@@ -63,6 +72,7 @@ wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/${URL}" -
 ffmpeg -i /tmp/wos.ts -frames:v 1 /tmp/wa/wos.png
 convert /tmp/wa/wos.png -gravity Northeast -fill black -pointsize 32 -annotate +20+20 "${DATESTR}" /tmp/wa/wos1.png
 
+mv /tmp/wa/pos1.png pos.png
 mv /tmp/wa/wos1.png wos.png
 mv /tmp/wa/aos1.png aos.png
 
