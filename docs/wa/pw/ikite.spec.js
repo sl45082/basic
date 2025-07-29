@@ -12,9 +12,11 @@ test('capture ikite', async ({ page }) => {
     ]
   });
 
+  await page.setViewportSize({ width: 1920, height: 1080 }); // Safe and widely supported
+
   await page.goto('https://www.windy.com/35.241/-75.558?35.082,-75.460,8', {
     waitUntil: 'networkidle',
-    timeout: 60000  // prob dont need this
+    timeout: 120000  // prob dont need this
   });
 
   const title = await page.title();
@@ -30,7 +32,17 @@ test('capture ikite', async ({ page }) => {
 //    timeout: 60000 // optional timeout (10 seconds)
 //  });
  
-  await page.screenshot({ path: '/tmp/wa/ikite.png' });
+  //await page.screenshot({ path: '/tmp/wa/ikite.png' });
+  await page.screenshot({
+    path: '/tmp/wa/ikite.png',
+    clip: {
+     x: 0,       // horizontal offset from top-left
+     y: 0,       // vertical offset from top-left
+     width: 1920,   // width of the screenshot
+     height: 1080   // height of the screenshot
+  }
+});
+
 
 });
 
