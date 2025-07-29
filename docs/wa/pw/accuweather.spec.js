@@ -35,7 +35,17 @@ await page.setExtraHTTPHeaders({
     window.scrollTo(0, 300); // Scroll down y pixels
   });
   await page.waitForTimeout(5000); // pauses for 3 second
-  await page.screenshot({ path: '/tmp/wa/accuweather.png' });
+  //await page.screenshot({ path: '/tmp/wa/accuweather.png' });
+  await page.screenshot({
+    path: '/tmp/wa/accuweather.png',
+    clip: {
+     x: 100,       // horizontal offset from top-left
+     y: 100,       // vertical offset from top-left
+     width: 1920,   // width of the screenshot
+     height: 1080   // height of the screenshot
+  }
+});
+
 
 });
 

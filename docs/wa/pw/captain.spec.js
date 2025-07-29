@@ -18,7 +18,17 @@ test('capture captain', async ({ page }) => {
     window.scrollTo(0, 455); // Scroll down y pixels
   });
   // await page.waitForTimeout(5000); // pauses for 3 second
-  await page.screenshot({ path: '/tmp/wa/captain.png' });
+  //await page.screenshot({ path: '/tmp/wa/captain.png' });
+  await page.screenshot({
+    path: '/tmp/wa/captain.png',
+    clip: {
+     x: 100,       // horizontal offset from top-left
+     y: 170,       // vertical offset from top-left
+     width: 1180,   // width of the screenshot
+     height: 1024   // height of the screenshot
+  }
+});
+
 
 });
 

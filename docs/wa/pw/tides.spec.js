@@ -18,7 +18,17 @@ test('capture tide', async ({ page }) => {
     window.scrollTo(0, 375); // Scroll down y pixels
   });
   // await page.waitForTimeout(5000); // pauses for 3 second
-  await page.screenshot({ path: '/tmp/wa/tides.png' });
+  // await page.screenshot({ path: '/tmp/wa/tides.png' });
+  await page.screenshot({
+    path: '/tmp/wa/tides.png',
+    clip: {
+     x: 0,       // horizontal offset from top-left
+     y: 150,       // vertical offset from top-left
+     width: 980,   // width of the screenshot
+     height: 770   // height of the screenshot
+  }
+});
+
 
 });
 

@@ -29,15 +29,17 @@ echo "Git branches right now: \n" >> cron.log
 git branch -l >> cron.log
 
 pwd >> cron.log
+
+# trying to crop images inside tests, so removing this after it stabilizes
 # clean up some images
-convert captain.png -gravity North -chop 0x170 captain1.png
-mv captain1.png captain.png
-convert tides.png -crop 980x770+0+150 +repage tides1.png
-mv tides1.png tides.png
-convert noaa.png -crop 1130x680+0+0 +repage noaa1.png
-mv noaa1.png noaa.png
-convert accuweather.png -crop 1080x924+100+100 +repage accuweather1.png
-mv accuweather1.png accuweather.png
+#convert captain.png -gravity North -chop 0x170 captain1.png
+#mv captain1.png captain.png
+#convert tides.png -crop 980x770+0+150 +repage tides1.png
+#mv tides1.png tides.png
+#convert noaa.png -crop 1130x680+0+0 +repage noaa1.png
+#mv noaa1.png noaa.png
+#convert accuweather.png -crop 1080x924+100+100 +repage accuweather1.png
+#mv accuweather1.png accuweather.png
 
 # grab water temp animated gif
 cp /home/admin/Documents/surf-temp.gif .
