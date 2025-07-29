@@ -14,7 +14,7 @@ test('capture ikite', async ({ page }) => {
 
   await page.setViewportSize({ width: 1920, height: 1080 }); // Safe and widely supported
 
-  await page.goto('https://www.windy.com/35.241/-75.558?35.082,-75.460,8', {
+  await page.goto('https://www.windy.com/35.305/-74.641?34.749,-72.942,8', {
     waitUntil: 'networkidle',
     timeout: 120000  // prob dont need this
   });
