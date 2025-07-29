@@ -58,6 +58,16 @@ wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthe.stream/${URL}" -O 
 ffmpeg -i /tmp/pos.ts -frames:v 1 /tmp/wa/pos.png
 convert /tmp/wa/pos.png -gravity Northeast -fill black -pointsize 32 -annotate +20+20 "${DATESTR}" /tmp/wa/pos1.png
 
+if [ $? -ne 0 ]; then
+  convert -size 800x400 \
+        -background black \
+        -fill white \
+        -gravity center \
+        -pointsize 48 \
+        label:"as of ${DATESTR}\nRodanthe cam is down.\n:(" \
+        /tmp/wa/pos1.png
+fi
+
 # avon pier
 wget "https://5b17d0ba29814.streamlock.net:9443/live/avon.stream/chunklist_w1479874796.m3u8" -O /tmp/chunklist_w1479874796.m3u8
 URL=`tail -1  /tmp/chunklist_w1479874796.m3u8`
@@ -66,6 +76,16 @@ wget "https://5b17d0ba29814.streamlock.net:9443/live/avon.stream/${URL}" -O /tmp
 ffmpeg -i /tmp/aos.ts -frames:v 1 /tmp/wa/aos.png
 convert /tmp/wa/aos.png -gravity Northeast -fill black -pointsize 32 -annotate +20+20 "${DATESTR}" /tmp/wa/aos1.png
 
+if [ $? -ne 0 ]; then
+  convert -size 800x400 \
+        -background black \
+        -fill white \
+        -gravity center \
+        -pointsize 48 \
+        label:"as of ${DATESTR}\nAvon cam is down.\n:(" \
+        /tmp/wa/aos1.png
+fi
+
 # waves-coeanside
 wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/chunklist_w167089497.m3u8" -O /tmp/chunklist_w167089497.m3u8
 URL=`tail -1  /tmp/chunklist_w167089497.m3u8`
@@ -73,6 +93,16 @@ wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/${URL}" -
 # grab 1st frame and put in a png
 ffmpeg -i /tmp/wos.ts -frames:v 1 /tmp/wa/wos.png
 convert /tmp/wa/wos.png -gravity Northeast -fill black -pointsize 32 -annotate +20+20 "${DATESTR}" /tmp/wa/wos1.png
+
+if [ $? -ne 0 ]; then
+  convert -size 800x400 \
+        -background black \
+        -fill white \
+        -gravity center \
+        -pointsize 48 \
+        label:"as of ${DATESTR}\nWaves cam is down.\n:(" \
+        /tmp/wa/wos1.png
+fi
 
 mv /tmp/wa/pos1.png pos.png
 mv /tmp/wa/wos1.png wos.png
