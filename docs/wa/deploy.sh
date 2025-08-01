@@ -25,8 +25,10 @@ ls -ltr *.png >> cron.log
 
 #make sure we are on main branch
 git checkout main
+git config pull.rebase true
 echo "Git branches right now: \n" >> cron.log
 git branch -l >> cron.log
+git pull >> cron.log
 
 pwd >> cron.log
 
@@ -47,7 +49,7 @@ cp /home/admin/Documents/surf-temp.gif .
 ls -asl /home/admin/Documents/surf-temp.gif ./surf-temp.gif >> cron.log
 
 # make a date string to put in images
-DATESTR=`date "+%Y-%m-%d: %H:%M"`
+DATESTR=`date "+%Y-%m-%d ~ %H:%M"`
 
 # grab a png  of video streams for hatteras[TODO], avon, waves-oceanside, rodanthe, waves-sounside[TODO]
 # rodanthe pier
@@ -63,7 +65,7 @@ if [ $? -ne 0 ]; then
         -background black \
         -fill white \
         -gravity center \
-        -pointsize 48 \
+        -pointsize 28 \
         label:"as of ${DATESTR}\nRodanthe cam is down.\n:(" \
         /tmp/wa/pos1.png
 fi
@@ -81,7 +83,7 @@ if [ $? -ne 0 ]; then
         -background black \
         -fill white \
         -gravity center \
-        -pointsize 48 \
+        -pointsize 28 \
         label:"as of ${DATESTR}\nAvon cam is down.\n:(" \
         /tmp/wa/aos1.png
 fi
@@ -99,7 +101,7 @@ if [ $? -ne 0 ]; then
         -background black \
         -fill white \
         -gravity center \
-        -pointsize 48 \
+        -pointsize 28 \
         label:"as of ${DATESTR}\nWaves cam is down.\n:(" \
         /tmp/wa/wos1.png
 fi
@@ -123,6 +125,7 @@ git status >> cron.log
 
 git add *.png *.mp3 *.gif
 git commit -m "checkin lwwa web resources: $(date '+%Y-%m-%d %H:%M:%S')"
+git status >> cron.log
 git push --set-upstream origin main >> cron.log
 # git push --all >> cron.log
 
