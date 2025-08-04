@@ -88,7 +88,7 @@ if [ $? -ne 0 ]; then
         /tmp/wa/aos1.png
 fi
 
-# waves-coeanside
+# waves-oceanside
 wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/chunklist_w167089497.m3u8" -O /tmp/chunklist_w167089497.m3u8
 URL=`tail -1  /tmp/chunklist_w167089497.m3u8`
 wget "https://5b17d0ba29814.streamlock.net:9443/live/rodanthepi.stream/${URL}" -O /tmp/wos.ts
@@ -106,9 +106,29 @@ if [ $? -ne 0 ]; then
         /tmp/wa/wos1.png
 fi
 
+# grab a png  of video stream for frisco/hatteras  durant station
+wget "https://5a5f765a4fcc2.streamlock.net:1936/live/hatteras.stream/chunklist_w1173875531.m3u8" -O /tmp/chunklist_w1173875531.m3u8
+URL=`tail -1  /tmp/chunklist_w1173875531.m3u8`
+wget "https://5a5f765a4fcc2.streamlock.net:1936/live/hatteras.stream/${URL}" -O /tmp/fos.ts
+# grab 1st frame and put in a png
+ffmpeg -i /tmp/fos.ts -frames:v 1 /tmp/wa/fos.png
+convert /tmp/wa/fos.png -gravity Northeast -fill black -pointsize 32 -annotate +20+20 "\n\n${DATESTR}" /tmp/wa/fos1.png
+
+if [ $? -ne 0 ]; then
+  convert -size 800x400 \
+        -background black \
+        -fill white \
+        -gravity center \
+        -pointsize 28 \
+        label:"as of ${DATESTR}\nHatteras cam is down.\n:(" \
+        /tmp/wa/fos1.png
+fi
+
+# get all the files from staging into repo
 mv /tmp/wa/pos1.png pos.png
 mv /tmp/wa/wos1.png wos.png
 mv /tmp/wa/aos1.png aos.png
+mv /tmp/wa/fos1.png fos.png
 
 # grab some radio from nova rock
 echo "fetching radio mp3" >> cron.log
@@ -116,8 +136,7 @@ wget http://93.190.137.196:8427/ -O /tmp/wa/nlradio.mp3 &
 nlpid=$!
 
 # sleep for a little to get some radio content
-#sleep 420
-sleep 5
+sleep 300
 kill $nlpid
 
 whereis git >> cron.log
