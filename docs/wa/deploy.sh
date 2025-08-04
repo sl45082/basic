@@ -10,7 +10,7 @@ mkdir ${IMAGEDIR}
 
 # generate an image for each page during test script
 cd /home/admin/Documents/basic/docs/wa/pw
-rm -fv *.png
+# rm -fv *.png
 
 echo "Starting with deploy.sh" >> cron.log
 date >> cron.log
