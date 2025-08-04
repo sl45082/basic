@@ -1,4 +1,6 @@
 
+nohup.out
+
 # Playwright
 node_modules/
 /test-results/
