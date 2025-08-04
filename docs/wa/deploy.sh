@@ -28,6 +28,7 @@ git checkout main
 git config pull.rebase true
 echo "Git branches right now: \n" >> cron.log
 git branch -l >> cron.log
+git stash >> cron.log
 git pull >> cron.log
 
 pwd >> cron.log
