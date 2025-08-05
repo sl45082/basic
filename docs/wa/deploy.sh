@@ -20,7 +20,7 @@ npx playwright test --trace on >> cron.log
  
 # get all the images and mp3 into the right dir and publish them
 cp ${IMAGEDIR}/* .
-echo "new images from ${IMAGEDIR}:"
+echo "new images into pw repo from ${IMAGEDIR}:"
 ls -ltr *.png >> cron.log
 
 #make sure we are on main branch
@@ -28,7 +28,7 @@ git checkout main
 git config pull.rebase true
 echo "Git branches right now: \n" >> cron.log
 git branch -l >> cron.log
-git stash >> cron.log
+#git stash >> cron.log
 git pull >> cron.log
 
 pwd >> cron.log
@@ -139,6 +139,8 @@ nlpid=$!
 # sleep for a little to get some radio content
 sleep 300
 kill $nlpid
+
+cp  /tmp/wa/nlradio.mp3 . 
 
 whereis git >> cron.log
 git status >> cron.log
