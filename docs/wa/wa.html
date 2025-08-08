@@ -51,10 +51,10 @@
       { filename: 'tides.png', zoom: 100 },
       { filename: 'ikite.png', zoom: 100 },
       { filename: 'noaa.png', zoom: 100},
-      { filename: 'surfchex1.png',  zoom: 100},
+      { filename: 'surfchex1.png',  zoom: 190},
       { filename: 'captain.png', zoom: 100 },
       { filename: 'surfchex2.png',  zoom: 140},
-      { filename: 'surf-temp.gif', zoom: 140},
+      { filename: 'surf-temp.gif', zoom: 120},
       { filename: 'cones.png', zoom: 90},
       { filename: '7day.png',  zoom: 100}
     ];
@@ -98,7 +98,7 @@
        noaaRadio.pause();
        noaaRadio.currentTime = 0;
        rockRadio.play().catch(err => console.warn("rockRadio stream failed:", err));
-     }, 3 * 60 * 1000);
+     }, 8 * 60 * 1000);
 
     }
 
