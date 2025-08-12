@@ -10,7 +10,9 @@ mkdir ${IMAGEDIR}
 
 # generate an image for each page during test script
 cd /home/admin/Documents/basic/docs/wa/pw
-rm -fv *.png *.mp3
+# clean out old files.
+rm -fv 7day.png accuweather.png aos.png captain.png cones.png fos.png ikite.png nlradio.mp3
+rm -fv noaa.png pos.png surfchex1.png surfchex2.png tides.png wos.png
 
 echo "Starting with deploy.sh" >> cron.log
 date >> cron.log
