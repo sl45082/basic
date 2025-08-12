@@ -21,7 +21,17 @@ test('capture cones', async ({ page }) => {
     window.scrollTo(0, 5); // Scroll down y pixels
   });
   // await page.waitForTimeout(5000); // pauses for 3 second
-  await page.screenshot({ path: '/tmp/wa/cones.png' });
+  //await page.screenshot({ path: '/tmp/wa/cones.png' });
+
+  await page.screenshot({
+    path: '/tmp/wa/cones.png',
+    clip: {
+     x: 0,       // horizontal offset from top-left
+     y: 0,       // vertical offset from top-left
+     width: 1920,   // width of the screenshot
+     height: 580   // height of the screenshot
+  }
+ });
 
 });
 
