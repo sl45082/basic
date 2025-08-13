@@ -26,7 +26,7 @@ test('capture ikite', async ({ page }) => {
     document.body.style.zoom = '1.5'; // 1.5x mag
   });
 
-  await page.waitForTimeout(5000); // pauses for 3 second
+  await page.waitForTimeout(9000); // pauses for 9 second
 //  await page.waitForSelector('div.jw-marker.t1.p1.marker[title="Avon Sound"]', {
 //    state: 'visible',
 //    timeout: 60000 // optional timeout (10 seconds)
