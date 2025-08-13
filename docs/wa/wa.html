@@ -94,12 +94,12 @@
      // Start weather stream
      noaaRadio.play().catch(err => console.warn("noaa stream failed:", err));
 
-     // Stop weather after 3 minutes and resume secondary
+     // Stop weather after 2 minutes and resume secondary
      setTimeout(() => {
        noaaRadio.pause();
        noaaRadio.currentTime = 0;
        rockRadio.play().catch(err => console.warn("rockRadio stream failed:", err));
-     }, 8 * 60 * 1000);
+     }, 2 * 60 * 1000);
 
     }
 
@@ -108,7 +108,7 @@
         document.getElementById('start-btn').remove();
         showNextImage();
         playWeatherRadio(); // Initial broadcast
-        setInterval(playWeatherRadio, 22 * 60 * 1000); // Repeat every 22 min
+        setInterval(playWeatherRadio, 8 * 60 * 1000); // Repeat every 8  min
     };
 
   </script>
