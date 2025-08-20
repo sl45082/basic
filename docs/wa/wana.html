@@ -40,10 +40,10 @@
   <script>
     const baseUrl = 'https://sl45082.github.io/basic/wa/pw/';
     const images = [
-      { filename: 'pos.png', zoom: 100 },
-      { filename: 'wos.png', zoom: 100 },
-      { filename: 'aos.png', zoom: 100 },
-      { filename: 'fos.png', zoom: 100 },
+      { filename: 'pos.png', zoom: 95 },
+      { filename: 'wos.png', zoom: 95 },
+      { filename: 'aos.png', zoom: 95 },
+      { filename: 'fos.png', zoom: 95 },
       { filename: 'accuweather.png', zoom: 100 },
       { filename: 'tides.png', zoom: 100 },
       { filename: 'ikite.png', zoom: 100 },
@@ -52,8 +52,8 @@
       { filename: 'captain.png', zoom: 100 },
       { filename: 'surfchex2.png',  zoom: 140},
       { filename: 'surf-temp.gif', zoom: 120},
-      { filename: 'cones.png', zoom: 90},
-      { filename: '7day.png',  zoom: 90},
+      { filename: 'cones.png', zoom: 80},
+      { filename: '7day.png',  zoom: 95},
       { filename: 'wana-html.png',  zoom: 50}
     ];
 //
@@ -66,9 +66,10 @@
       const viewer = document.getElementById('image-viewer');
       const current = images[index];
 
-const timestamp = new Date().getTime();
-const img = new Image();
-qscb = `?v=${timestamp}`;
+      // querystring to bust cache
+      const timestamp = new Date().getTime();
+      const img = new Image();
+      qscb = `?v=${timestamp}`;
 
       viewer.style.backgroundImage = `url(${baseUrl + current.filename + qscb})`;
 
