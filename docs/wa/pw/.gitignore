@@ -3,6 +3,7 @@
 *.log.*
 *.html
 nohup.out
+wget-log*
 
 # Playwright
 node_modules/
