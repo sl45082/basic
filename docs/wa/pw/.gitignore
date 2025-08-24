@@ -1,7 +1,6 @@
 
 *.log
 *.log.*
-*.html
 nohup.out
 wget-log*
 
