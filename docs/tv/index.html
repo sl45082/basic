@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Schedule Viewer</title>
   <style>
     body { font-family: sans-serif; padding: 1em; background: #f0f0f0; }
@@ -35,7 +38,12 @@
   <div id="schedule"></div>
 
   <script>
-    fetch('schedule.json')
+    // querystring to bust cache
+    const timestamp = new Date().getTime();
+    const img = new Image();
+    qscb = `schedule.json?v=${timestamp}`;
+
+    fetch(qscb)
       .then(res => res.json())
       .then(data => {
         const scheduleContainer = document.getElementById('schedule');
