@@ -1,0 +1,60 @@
+>>>>>>>>>>>>>>>>>>>> generating road report html <<<<<<<<<<<<<<<<<<<
+input is /tmp/wa/roads.csv
+output is /tmp/incidents.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NC-12 Incident Report</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #0077cc;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Incident table loaded.");
+    });
+  </script>
+</head>
+<body>
+  <h1>NC-12 Incident Report</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Road</th>
+        <th>Type</th>
+        <th>Reason</th>
+        <th>Location</th>
+        <th>Start</th>
+        <th>End</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</body>
+</html>
