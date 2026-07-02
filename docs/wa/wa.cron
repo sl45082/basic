@@ -1,0 +1,2 @@
+
+*/17,33,49 6-20 * * *	/usr/bin/bash -x /home/admin/Documents/basic/docs/wa/deploy.sh & 
