@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Schedule Viewer</title>
+  <style>
+    body { font-family: sans-serif; padding: 1em; background: #f0f0f0; }
+    #categoryBar {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.5em;
+      padding: 0.5em 0;
+      margin-bottom: 1em;
+    }
+    .categoryLink {
+      padding: 0.5em 1em;
+      background: #ddd;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .categoryLink.active {
+      background: #0077cc;
+      color: white;
+      font-weight: bold;
+    }
+    .day { margin-bottom: 2em; }
+    .event { margin-left: 2em; padding: 0.2em 0; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>📅 Schedule Viewer</h1>
+  <div id="categoryBar"></div>
+  <div id="schedule"></div>
+
+  <script>
+    // querystring to bust cache
+    const timestamp = new Date().getTime();
+    const img = new Image();
+    qscb = `schedule.json?v=${timestamp}`;
+
+    fetch(qscb)
+      .then(res => res.json())
+      .then(data => {
+        const scheduleContainer = document.getElementById('schedule');
+        const categoryBar = document.getElementById('categoryBar');
+
+        // Collect all unique categories
+        const categorySet = new Set();
+        for (const day of Object.values(data)) {
+          for (const category of Object.keys(day)) {
+            categorySet.add(category);
+          }
+        }
+
+        // Create category filter buttons
+        categorySet.forEach(category => {
+          const btn = document.createElement('div');
+          btn.className = 'categoryLink';
+          btn.textContent = category;
+          btn.onclick = () => filterByCategory(category, btn);
+          categoryBar.appendChild(btn);
+        });
+
+        // Render all events grouped by day and category
+        for (const [dayLabel, categories] of Object.entries(data)) {
+          const dayDiv = document.createElement('div');
+          dayDiv.className = 'day';
+
+          const dayHeader = document.createElement('h2');
+          dayHeader.textContent = dayLabel;
+          dayDiv.appendChild(dayHeader);
+
+          for (const [category, events] of Object.entries(categories)) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = `categoryBlock`;
+            categoryDiv.dataset.category = category;
+
+            const catHeader = document.createElement('h3');
+            catHeader.textContent = `${category} (${events.length})`;
+            categoryDiv.appendChild(catHeader);
+
+            events.forEach(event => {
+              const div = document.createElement('div');
+              div.className = 'event';
+//              div.textContent = formatEvent(event);
+div.innerHTML = formatEvent(event);
+              categoryDiv.appendChild(div);
+            });
+
+            dayDiv.appendChild(categoryDiv);
+          }
+
+          scheduleContainer.appendChild(dayDiv);
+        }
+
+function formatEvent(event) {
+  const time = event.time || '⏰ N/A';
+  const title = event.event || '📺 Untitled Event';
+
+  // Use channels if available, otherwise fallback to channels2
+  const primaryChannels = (event.channels && event.channels.length > 0)
+    ? event.channels
+    : event.channels2 || [];
+
+  const channelInfo = primaryChannels.length > 0
+    ? primaryChannels.map(c => {
+        const url = `https://thedaddy.top/stream/stream-${c.channel_id}.php`;
+        return `${c.channel_name} (<a href="${url}" target="_blank">${c.channel_id}</a>)`;
+      }).join(', ')
+    : '📡 No channel info';
+
+  return `${time} — ${title} | ${channelInfo}`;
+}
+
+        function filterByCategory(category, clickedBtn) {
+          document.querySelectorAll('.categoryLink').forEach(btn => btn.classList.remove('active'));
+          clickedBtn.classList.add('active');
+
+          document.querySelectorAll('.categoryBlock').forEach(block => {
+            block.style.display = block.dataset.category === category ? 'block' : 'none';
+          });
+        }
+      });
+  </script>
+</body>
+</html>
