@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Storm Cone Path</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .image-row {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 10px;
+      padding: 10px;
+      height: auto;
+      flex-wrap: wrap;  /* let images wrap around */
+    }
+
+    .image-row img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .image-wrapper {
+      flex: 1 1 45%; /* try to get 2 images per row */
+    }
+
+    .label {
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: center;
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .image-row {
+        flex-direction: column;
+      }
+
+      .image-wrapper {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="image-row"> 
+<div class="image-wrapper"> <img src=https://www.nhc.noaa.gov/storm_graphics/EP11/refresh/EP112026_5day_cone+png/042039_5day_cone.png> <div class=label>This storm is in the Pacific.</div></div>  
+<div class="image-wrapper"> <img src=https://www.nhc.noaa.gov/storm_graphics/EP12/refresh/EP122026_5day_cone+png/042038_5day_cone.png> <div class=label>This storm is in the Pacific.</div></div>  
+<div class="image-wrapper"> <img src=https://www.nhc.noaa.gov/storm_graphics/EP13/refresh/EP132026_5day_cone+png/042034_5day_cone.png> <div class=label>This storm is in the Pacific.</div></div>  
+
+  </div> 
+ </body> 
+</html>" 
