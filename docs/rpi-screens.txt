@@ -1,0 +1,43 @@
+
+# start an audio loop
+./pers/rpi4/audio/pl1.sh & 
+
+
+"file:///home/admin/Documents/7day.html"
+"file:///home/admin/Documents/cones.html"
+"https://sl45082.github.io/basic/wa/pw/7day.html
+"https://sl45082.github.io/basic/wa/pw/cones.html
+https://sl45082.github.io/basic/wa/pw/roads.html
+https://surfcaptain.com/forecast/rodanthe-north-carolina
+https://surfchex.intelliweather.net/imagery/Surfchex/rad_nc_moreheadcity_640x480.htm
+https://surfchex.intelliweather.net/imagery/Surfchex/satrad_reg_640x480.htm
+https://www.accuweather.com/en/us/severe-weather
+https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998
+https://www.hatterasislandsurfshop.com
+https://www.realwatersports.com
+https://www.surfchex.com/cams/avon/
+https://www.surfchex.com/cams/hatteras-web-cam/
+https://www.surfchex.com/cams/nags-head-web-cam-abalone-st/
+https://www.surfchex.com/cams/rodanthe-web-cam/
+https://www.surfchex.com/cams/waves-nc/
+https://www.surfchex.com/cams/waves-nc-oceanside/
+https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest
+https://wx.ikitesurf.com/search/35.158/-75.282/8
+https://wx.iwindsurf.com/profile/100791
+
+#sleep for a bit make sure wifi is up
+sleep 10
+file1="start-ff.bb"
+cd ~/Documents
+wget https://sl45082.github.io/basic/${file1} -o log
+
+#add error checks to make sure file is valid
+flen=`wc -c ${file1} | cut -f1 -d' '`
+if [[ $flen -gt 1000 ]]; 
+then
+	cp $file1 start-ff.sh 
+	chmod 775 start-ff.sh
+	rm -f $file1
+fi
+wget  https://sl45082.github.io/basic/d12rpi5wapp1.0.zip -o log
+

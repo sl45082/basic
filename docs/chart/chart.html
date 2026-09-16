@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TEST 5-Minute Candlestick Chart with EMA</title>
+  <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #chart {
+      width: 100%;
+      height: 600px;
+    }
+   #overlay {
+  	position: fixed;
+  	top: 0;
+  	left: 100px; /* Reveals 100px of content on the left */
+  	width: calc(100% - 100px);
+  	height: 100%;
+  	background-color: rgba(128, 128, 128, 1.0); /* Soft gray, fully opaque */
+  	cursor: grab;
+  	touch-action: none;
+  	z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay"></div>
+
+  <div id="chart-wrapper" style="position: relative; width: 100%; height: 100%;">
+    <div id="chart" style="width: 100%; height: 100%;"></div>
+  </div>
+
+  <script>
+
+    window.addEventListener('DOMContentLoaded', () => {
+  	enableOverlayDrag();
+    });
+
+    // Welcome to Alpha Vantage! Your API key is: AGZBH691MMN9G7IM. 
+
+    // wget -dv "https://eodhd.com/api/intraday/AAPL.US?date=2025-07-10&range=1&api_token=demo&interval=5m&fmt=json" -O 5min.json
+    // const API_KEY = '68695a2e24e998.69900337'; // my EODHD API key doesnt suppor 5min
+    const API_KEY = 'AGZBH691MMN9G7IM'; 
+    const SYMBOL = 'SPY';
+    const INTERVAL = '5min';
+//  const EODHD_API_URL = `https://eodhd.com/api/intraday/${SYMBOL}?api_token=${API_KEY}&interval=${INTERVAL}&range=1&date=2025-07-10&fmt=json`;
+//    const ALPHA_API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=SPY&interval=5min&outputsize=full&apikey=AGZBH691MMN9G7IMi`;
+    const API_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${SYMBOL}&interval=${INTERVAL}&outputsize=full&apikey=${API_KEY}`;
+
+// magic number for proper UTC/timezone to lightweight charts graphing time line
+
+// currently a dead function, but may need it to filter on trading hours
+/*
+function normalizeAlphaVantageData(rawJson) {
+  const timeSeries = rawJson['Time Series (5min)'];
+  if (!timeSeries) {
+    console.error('Invalid Alpha Vantage data structure.');
+    return [];
+  }
+
+  const normalized = Object.entries(timeSeries).map(([timestamp, values]) => {
+    return {
+      time: Math.floor(new Date(timestamp).getTime() / 1000),  // UNIX timestamp in seconds
+      open: parseFloat(values['1. open']),
+      high: parseFloat(values['2. high']),
+      low: parseFloat(values['3. low']),
+      close: parseFloat(values['4. close']),
+    };
+  });
+
+  // Sort by time ascending (required for proper chart rendering)
+  normalized.sort((a, b) => a.time - b.time);
+
+  return normalized;
+}
+*/
+
+  async function fetchData() {
+      const res = await fetch(API_URL);
+      const raw = await res.json();
+
+    const timeSeries = raw['Time Series (5min)'];
+    if (!timeSeries) {
+      console.error('Invalid Alpha Vantage data structure.');
+      return [];
+    }
+  // this aplha api specific stuff, every api needs their own impl
+  const normalized = Object.entries(timeSeries).map(([timestamp, values]) => {
+    return {
+      time: Math.floor(new Date(timestamp).getTime() / 1000) +  (5 * 60 * 60),  // UTC timestamp in seconds
+      open: parseFloat(values['1. open']),
+      high: parseFloat(values['2. high']),
+      low: parseFloat(values['3. low']),
+      close: parseFloat(values['4. close']),
+    };
+  });
+
+  // Sort by time ascending (required for proper chart rendering)
+  normalized.sort((a, b) => a.time - b.time);
+
+  return normalized;
+
+  }
+
+function enableOverlayDrag(overlayId = 'overlay') {
+  const overlay = document.getElementById(overlayId);
+  let startX = 0;
+  let offsetX = parseInt(overlay.style.left, 10) || 0;
+  let dragging = false;
+
+  // Mouse Events
+  overlay.addEventListener('mousedown', e => {
+    dragging = true;
+    startX = e.clientX - offsetX;
+    overlay.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mouseup', () => {
+    dragging = false;
+    overlay.style.cursor = 'grab';
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (dragging) {
+      offsetX = e.clientX - startX;
+      overlay.style.left = Math.max(0, offsetX) + 'px';
+      overlay.style.width = `calc(100% - ${Math.max(0, offsetX)}px)`;
+    }
+  });
+
+  // Touch Events
+  overlay.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX - offsetX;
+  }, { passive: false });
+
+  overlay.addEventListener('touchmove', e => {
+    offsetX = e.touches[0].clientX - startX;
+    overlay.style.left = Math.max(0, offsetX) + 'px';
+    overlay.style.width = `calc(100% - ${Math.max(0, offsetX)}px)`;
+  }, { passive: false });
+}
+
+
+function sanitizeJSON(data) {
+  if (data === null || data === "null" || data === "") {
+    return 0;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(sanitizeJSON);
+  }
+
+  if (typeof data === "object") {
+    const sanitized = {};
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        sanitized[key] = sanitizeJSON(data[key]);
+      }
+    }
+    return sanitized;
+  }
+
+  return data;
+}
+
+ function calculateEMA(data, period = 20) {
+      const ema = [];
+      let multiplier = 2 / (period + 1);
+      let prevEma;
+
+      data.forEach((point, index) => {
+        if (index < period - 1) return;
+        if (index === period - 1) {
+          const sum = data.slice(0, period).reduce((acc, val) => acc + val.close, 0);
+          prevEma = sum / period;
+          ema.push({ time: point.time, value: prevEma });
+        } else {
+          prevEma = (point.close - prevEma) * multiplier + prevEma;
+          ema.push({ time: point.time, value: prevEma });
+        }
+      });
+
+      return ema;
+ }
+
+ function filterCandlesByTimeWindow(candleJson) {
+  // AKAIK the data is already EST time zone
+  const easternOffsetMs = -5 * 60 * 60 * 1000;
+  const latestDate = getLatestTradingDateET(candleJson);
+
+   return candleJson.filter(candle => {
+     const utcDate = new Date(candle.time * 1000);
+     const etDate = new Date(utcDate.getTime() + easternOffsetMs);
+
+     const dateStr = etDate.toISOString().slice(0, 10);
+     const hour = etDate.getHours();
+     const minutes = etDate.getMinutes();
+
+     // Must be on latest trading date and within 9:00 to 17:00 ET
+     const isInHours = (hour > 8 && hour < 17);
+     return dateStr === latestDate && isInHours;
+   });
+  }
+
+  function getLatestTradingDateET(candleJson) {
+      const easternOffsetMs = -5 * 60 * 60 * 1000; // UTC−5 offset in milliseconds
+      const dates = candleJson.map(candle => {
+        const utcDate = new Date(candle.time * 1000);
+        const etDate = new Date(utcDate.getTime() + easternOffsetMs);
+        return etDate.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+      });
+
+      const uniqueDates = [...new Set(dates)];
+      uniqueDates.sort(); // Ascending
+      return uniqueDates[uniqueDates.length - 2]; // latest may be partial, so go back 2 days, not sure....
+    }
+
+async function drawChart() {
+    const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+        layout: {
+          background: { color: '#ffffff' },
+          textColor: '#000',
+        },
+        grid: {
+          vertLines: { color: '#eee' },
+          horzLines: { color: '#eee' },
+        },
+        timeScale: {
+          timeVisible: true,
+          secondsVisible: false,
+        },
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+
+      // get some data from API endpoint
+      const data = await fetchData();
+
+      // restructure the alpha response json
+      // const normalData = normalizeAlphaVantageData(data);
+
+    // there can be nulls in that data that just came back, defend.
+    jsonData = sanitizeJSON(data);
+
+    chart.timeScale().fitContent();
+    chart.applyOptions({
+     timeScale: {
+      visible: false
+      }
+    });
+
+    const candleSeries = chart.addCandlestickSeries();
+
+   // Filter to include only last trade day and 9 AM to 5 PM candles
+  const filteredJson = filterCandlesByTimeWindow(jsonData);
+
+  const totalBars = filteredJson.length;
+  const visibleBars = 97;
+
+  if (totalBars > visibleBars) {
+    const to = totalBars - 1; // Last bar index
+    const from = totalBars - visibleBars;
+    chart.timeScale().setVisibleLogicalRange({
+      from: from,
+      to: to,
+    });
+  } else {
+    // If there are fewer than 97 bars, fit all content
+    chart.timeScale().fitContent();
+  }
+
+  candleSeries.setData(filteredJson);
+
+  const emaData = calculateEMA(filteredJson);
+  const emaSeries = chart.addLineSeries({ color: 'blue', lineWidth: 2 });
+  emaSeries.setData(emaData);
+
+}
+
+    drawChart();
+
+  </script>
+</body>
+</html>
+
