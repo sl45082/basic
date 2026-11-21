@@ -1,0 +1,67 @@
+#!/bin/bash 
+
+# version 1.6 
+# github based config
+#	file length checks
+#	cones integration started
+#	cones generation to 1st step
+#	delay firefox startup
+
+#export DESKTOP_SESSION=LXDE-pi-wayfire
+export DISPLAY=:2
+
+# in sudo raspi-config changed settings to support 4k60fs
+# in firefox and chromium disabled hardware accleration support
+
+
+# generate a cones html for the active hurricane -during the season (july-nov). otherwise show an image
+# from weather.com of the US weather. See the script below for more info:
+cd ~/Documents
+# enable monitor dimming in off hours
+pers/rpi4/dimmer.sh & 
+./cones.sh & 
+
+echo "launching firefox...."
+
+##  --kiosk  is unreliable across diff displays so clean any old display resolution config
+rm  -f ~/.mozilla/firefox/hvcfi1v2.default-release/xulstore.json
+## firefox  --kiosk   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
+## firefox  --start-maximized   -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
+# TODO: when there are no hurricanes use this image in the 7day.html:
+#	https://s.w-x.co/staticmaps/wu/wu/wxtype1200_cur/conus/animate.png	
+
+sleep 20
+firefox --display=:0 --kiosk-monitor 0 --kiosk -new-tab https://www.tide-forecast.com/locations/Oregon-Inlet-North-Carolina/tides/latest \
+	-new-tab https://www.surfchex.com/cams/rodanthe-web-cam/  \
+	-new-tab https://surfchex.intelliweather.net/imagery/Surfchex/satrad_reg_640x480.htm \
+	-new-tab https://www.surfchex.com/cams/avon/ \
+	-new-tab https://wx.ikitesurf.com/search/35.158/-75.282/8 \
+	-new-tab https://www.surfchex.com/cams/waves-nc/ \
+	-new-tab "file:///home/admin/Documents/7day.html" \
+ 	-new-tab "file:///home/admin/Documents/cones.html" \
+	-new-tab https://surfcaptain.com/forecast/rodanthe-north-carolina \
+	-new-tab https://www.realwatersports.com \
+	-new-tab https://www.accuweather.com/en/us/severe-weather \
+	-new-tab https://www.accuweather.com/en/us/waves/27982/weather-forecast/2114998  &
+
+
+#start a terminal for debugging if necessary
+lxterminal & 
+
+#fetch most recent config from cloud to make sure urls are up to date
+
+#sleep for a bit make sure wifi is up
+sleep 10
+file1="start-ff.${HOSTNAME}"
+cd ~/Documents
+wget https://sl45082.github.io/basic/${file1} -o log
+
+#add error checks to make sure file is valid
+flen=`wc -c ${file1} | cut -f1 -d' '`
+if [[ $flen -gt 1000 ]]; 
+then
+	cp $file1 start-ff.sh 
+	chmod 775 start-ff.sh
+	rm -f $file1
+fi
+

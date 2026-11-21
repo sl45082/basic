@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Schedule Viewer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    .row {
+      display: flex;
+      padding: 10px;
+    }
+    .row:nth-child(odd) {
+      background-color: #d9f0ff; /* light blue */
+    }
+    .row:nth-child(even) {
+      background-color: #fffacd; /* light yellow */
+    }
+    .column {
+      flex: 1;
+      padding: 0 10px;
+    }
+    .header {
+      font-weight: bold;
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h2>Schedule Viewer</h2>
+  <div id="schedule"></div>
+
+  <script>
+    fetch('https://thedaddy.click/schedule/schedule-generated.php')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('schedule');
+        // Optional: Add header row
+        const header = document.createElement('div');
+        header.className = 'row header';
+        header.innerHTML = `<div class="column">Time</div><div class="column">Channel ID</div>`;
+        container.appendChild(header);
+
+        data.forEach(item => {
+          const row = document.createElement('div');
+          row.className = 'row';
+          row.innerHTML = `
+            <div class="column">${item.time}</div>
+            <div class="column">${item.channel_id}</div>
+          `;
+          container.appendChild(row);
+        });
+      })
+      .catch(err => {
+        console.error('Failed to fetch schedule:', err);
+        document.getElementById('schedule').textContent = 'Error loading schedule.';
+      });
+  </script>
+</body>
+</html>
